@@ -30,11 +30,16 @@ def login():
 # Use Tkinter to create window
 window = tk.Tk()
 # In center of screen, create welcome message, username and password input boxes with username and password headings
-welcom_message = tk.Label(window, text="Welcome")
-welcom_message.pack()
+welcome_message = tk.Label(window, text="Welcome", font=('Arial', 25))
+welcome_message.pack()
 # Take in both username and password as input from the user
+username_message = tk.Label(window, text="User Name")
+username_message.pack()
 username = tk.Entry()
 username.pack()
+
+pass_message = tk.Label(window, text="Password")
+pass_message.pack()
 password = tk.StringVar()#Password is stored here
 pass_entry = tk.Entry(window, textvariable=password, show="*")
 pass_entry.pack()
