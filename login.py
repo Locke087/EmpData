@@ -16,12 +16,12 @@ def login():
             if i == 0:
                 continue
             hasher = sha256()
-            db_username = row[18]
+            db_username = row[0]
 
             hash_pass = password.get().encode('utf-8')
             hasher.update(hash_pass)
             hash_pass = hasher.hexdigest()
-            db_password = row[19]
+            db_password = row[18]
             if hash_pass == db_password and username.get() == db_username:
                 print('Found it')
                 #move on to the next window
@@ -35,7 +35,7 @@ frame = ttk.Frame(window)
 welcome_message = tk.Label(frame, text="Welcome", font=('Arial', 25), width=50)
 
 # Take in both username and password as input from the user
-username_message = tk.Label(frame, text="User Name")
+username_message = tk.Label(frame, text="Employee ID")
 
 username = tk.Entry(frame)
 
