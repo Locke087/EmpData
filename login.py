@@ -54,14 +54,17 @@ class LoginScreen():
                 hash_pass = self.password.get().encode('utf-8')
                 hasher.update(hash_pass)
                 hash_pass = hasher.hexdigest()
-                db_password = row[18]
+                db_password = row[21]
+                
                 if hash_pass == db_password and self.username.get() == db_username:
                     
                     #move on to the next window
+                    #1. Destory the current window
                     self.frame.destroy()
-                    # self.new_window = tk.Toplevel(self.master)
                     #Must be initialized to variable or it will get dumped by the garbage collector
-                    self.app = ViewEmployee(self.master)
+                    self.app = ViewEmployee(self.master, row)
+                    #The code above loads the window
+                    #Now we return to avoid getting an error message
                     return
                     
 
