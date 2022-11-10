@@ -10,7 +10,7 @@ class LoginScreen():
         self.master = master
         self.master.title("Login Screen")
         self.master.geometry('1000x720')
-        self.frame = tk.Frame(self.master)
+        self.frame = tk.Frame(self.master, width=1000, height=720)
         # In center of screen, create welcome message, username and password input boxes with username and password headings
         self.welcome_message = tk.Label(self.frame, text="Welcome", font=('Arial', 50))
 
