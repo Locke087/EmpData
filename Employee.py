@@ -1,5 +1,6 @@
 from datetime import datetime
 from typing import Dict
+
 class Address:
     def __init__(self, street, apt, city, state, zip_code, country='USA') -> None:
         self.street_address: str = street
@@ -8,6 +9,10 @@ class Address:
         self.state: str = state
         self.zip_code: int = zip_code
         self.country = country
+    def __str__(self) -> str:
+        if self.apt_no == '':
+            return f'{self.street_address} {self.city},{self.state} {self.country} {self.zip_code}'
+        return f'{self.street_address} #{self.apt_no} {self.city},{self.state} {self.country} {self.zip_code}'
 class PayTypeEnum:
     hourly: str = "Hourly"
     salary: str = "Salary"
@@ -15,6 +20,7 @@ class PermissionEnum:
     admin: str = "admin"
     emp: str = "employee"
 class Employee():
+    
     def row_init(self, row):
         self.fname: str = row[1]
         self.lname: str = row[2]

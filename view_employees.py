@@ -1,6 +1,7 @@
 from Employee import Employee
 import tkinter as tk
 import csv
+from single_emp import SingleEmployee
 class ViewEmployee():
     def __init__(self,master, employee_data) -> None:
         self.master = master
@@ -84,5 +85,9 @@ class ViewEmployee():
         
     
     def goEmp(self):
-        pass
+        #move on to the next window
+        #1. Destory the current window
+        self.frame.destroy()
+        #Must be initialized to variable or it will get dumped by the garbage collector
+        self.app = SingleEmployee(self.master, self.user)
         

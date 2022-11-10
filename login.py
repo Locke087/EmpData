@@ -3,7 +3,7 @@ from tkinter import ttk
 from tkinter import messagebox
 import csv
 from hashlib import sha256
-from view_employee import ViewEmployee
+from view_employees import ViewEmployee
 class LoginScreen():
     def __init__(self, master: tk.Tk) -> None:
         super().__init__()
