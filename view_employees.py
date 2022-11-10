@@ -8,7 +8,8 @@ class ViewEmployee():
         self.master.title("View Employee Screen")
         self.master.geometry('1000x720')
 
-        #TODO Binding is a tiny bit buggy when clicking. Maybe removing the feature to begin with?
+        #TODO Autocomplete when clicking on table is a tiny
+        # TODO bit buggy when clicking. Maybe consider removing the feature to begin with?
         #TODO actually document this document
         self.frame =tk.Frame(width=1000, height=720)
         self.frame.grid(row=0, column=0)
