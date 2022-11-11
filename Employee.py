@@ -25,21 +25,21 @@ class Employee():
         self.fname: str = row[1]
         self.lname: str = row[2]
         self.address: Address = Address(row[6],row[7], row[8], row[9], row[10], row[11] )
-        self.office_phone: str = row[11]
+        self.office_phone: str = row[12]
         self.emp_id: int = row[0]
-        self.pay_type: str = row[12]
-        self.wage: float = row[13]
-        self.birthday: datetime = row[14]
+        self.pay_type: str = row[13]
+        self.wage: float = row[16]
+        self.birthday: datetime = row[15]
         self.permission: str = row[20]
         self.title: str = row[4]
         self.department: str = row[3]
         self.office_email: str = row[5]
-        self.emergency_contact: Dict[str, str] = row[21]
-        self.start_date: datetime = row[16]
-        self.end_date: datetime = row[17]
+        self.emergency_contact: Dict[str, str] = row[22]
+        self.start_date: datetime = row[17]
+        self.end_date: datetime = row[18]
         self.bank_info = row[19]
         self.is_deactivated: bool = row[22] == 'y'
-        self.social_secuitry = row[15]
+        self.social_secuitry = row[14]
     # def __init__(self,fname,lname,address: Address,office_phone, emp_id, pay_type: str,
     #              wage, birthday,permission: str,title,department,office_email,
     #              emergency_contact,end_date,is_deactivated) -> None:
