@@ -4,6 +4,7 @@ from tkinter import messagebox
 import csv
 from hashlib import sha256
 from view_employees import ViewEmployee
+from Employee import Employee
 class LoginScreen():
     def __init__(self, master: tk.Tk) -> None:
         super().__init__()
@@ -61,8 +62,10 @@ class LoginScreen():
                     #move on to the next window
                     #1. Destory the current window
                     self.frame.destroy()
+                    employee = Employee()
+                    employee.row_init(row)
                     #Must be initialized to variable or it will get dumped by the garbage collector
-                    self.app = ViewEmployee(self.master, row)
+                    self.app = ViewEmployee(self.master, employee)
                     #The code above loads the window
                     #Now we return to avoid getting an error message
                     return
