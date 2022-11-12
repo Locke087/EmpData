@@ -2,6 +2,7 @@ from Employee import Employee
 import tkinter as tk
 import csv
 from single_emp import SingleEmployee
+from edit_employee import EditEmployee
 class ViewEmployee():
     def __init__(self,master, employee_data) -> None:
         self.master = master
@@ -91,7 +92,17 @@ class ViewEmployee():
             self.list_box.insert(tk.END, f"{emp.fname} {emp.lname}")
         
     def goEdit(self):
-        pass
+        employee = None
+        typed = self.list_box.get(tk.ANCHOR).replace(' ', '')
+        for item in self.employees:
+            comb = f"{item.emp_id}{item.fname}{item.lname}"
+            is_ok = typed.lower() in item.fname.lower() or typed.lower() in item.lname.lower() \
+                    or typed.lower() in comb.lower() or typed.lower() in comb.lower()
+            if is_ok:
+                employee = item
+                break
+        self.frame.destroy()
+        self.app = EditEmployee(self.master, employee)
     def goRemove(self):
         pass
     def goAdd(self):
