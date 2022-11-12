@@ -22,7 +22,12 @@ class EditEmployee():
         self.make_editable_entry('id', employee.emp_id)
         self.make_editable_entry('fname', employee.fname)
         self.make_editable_entry('lname', employee.lname)
-        self.make_editable_entry('address', str(employee.address))
+        self.make_editable_entry('street number', employee.address.street_address)
+        self.make_editable_entry('apt number', employee.address.apt_no)
+        self.make_editable_entry('city', employee.address.city)
+        self.make_editable_entry('state', employee.address.state)
+        self.make_editable_entry('country', employee.address.country)
+        self.make_editable_entry('zipcode', employee.address.zip_code)
         self.make_editable_entry('office_phone', employee.office_phone)
         self.make_editable_entry('wage', employee.wage)
         self.make_editable_entry('birthday', employee.birthday)
@@ -37,18 +42,18 @@ class EditEmployee():
         self.make_editable_entry('is_deactivated', employee.is_deactivated)
         self.make_editable_entry('social_secuitry', employee.social_secuitry)
 
-        rlim = 13
+        rlim = 17
         clim = 4
         r, c = 1, 0
         for key, view in self.views.items():
             # print('dict values', view, key)
-            view.grid(row=r, column=c, padx=10, pady=10)
+            view.grid(row=r, column=c, padx=30, pady=5)
             r += 1
             if r >= rlim:
                 r = 1
                 c += 1
         self.submit_btn = tk.Button(self.frame, text="Submit form", command=self.submit)
-        self.submit_btn.grid(row=11, column=2, rowspan=2)
+        self.submit_btn.grid(row=13, column=2, rowspan=4, sticky=tk.NSEW)
     def submit(self):
         #TODO do form validation
         for key, value in self.views.items():

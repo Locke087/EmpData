@@ -3,6 +3,7 @@ import tkinter as tk
 import csv
 from single_emp import SingleEmployee
 from edit_employee import EditEmployee
+import tkinter.messagebox as messagebox
 class ViewEmployee():
     def __init__(self,master, employee_data) -> None:
         self.master = master
@@ -34,9 +35,9 @@ class ViewEmployee():
 
         self.edit_emp_btn = tk.Button(self.frame, text="Edit Employee", command=self.goEdit, font=('Arial', 15))
         self.edit_emp_btn.grid(row=3, column=0,pady=10)
-        self.edit_emp_btn = tk.Button(self.frame, text="Add Employee", command=self.goEdit, font=('Arial', 15))
+        self.edit_emp_btn = tk.Button(self.frame, text="Add Employee", command=self.goAdd, font=('Arial', 15))
         self.edit_emp_btn.grid(row=4, column=0, pady=10)
-        self.edit_emp_btn = tk.Button(self.frame, text="Remove Employee", command=self.goEdit, font=('Arial', 15))
+        self.edit_emp_btn = tk.Button(self.frame, text="Remove Employee", command=self.goRemove, font=('Arial', 15))
         self.edit_emp_btn.grid(row=5, column=0, pady=10)
 
         self.emp_title = tk.Label(self.frame, text="Employee list", font=('Arial', 25))
@@ -104,7 +105,12 @@ class ViewEmployee():
         self.frame.destroy()
         self.app = EditEmployee(self.master, employee)
     def goRemove(self):
-        pass
+        selected = self.list_box.get(tk.ANCHOR)
+        if selected.replace(' ', '') != '':
+            is_yes = messagebox.askyesno('Delete the employee?', 'Are you sure you want to delete the employee')
+            if is_yes:
+                self.list_box.delete(tk.ANCHOR)
+            #TODO remove the thing actually from a the database
     def goAdd(self):
         pass
     def goEmp(self):
