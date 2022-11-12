@@ -54,7 +54,7 @@ class AddEmployee():
             if r >= rlim:
                 r = 2
                 c += 1
-        self.submit_btn = tk.Button(self.frame, text="Submit form", command=self.submit)
+        self.submit_btn = tk.Button(self.frame, text="💾Save", command=self.submit, font=('Arial', 25))
         self.submit_btn.grid(row=14, column=2, rowspan=4, sticky=tk.NSEW)
     def submit(self):
         #TODO do form validation

@@ -42,21 +42,24 @@ class ViewEmployee():
         self.edit_emp_btn = tk.Button(self.frame, text="Remove Employee", command=self.goRemove, font=('Arial', 15))
         self.edit_emp_btn.grid(row=5, column=0, pady=10)
 
-        self.emp_title = tk.Label(self.frame, text="Employee list", font=('Arial', 25))
-        self.emp_title.grid(row=0, column=1)
+        self.emp_title = tk.Label(self.frame, text="Employee list", font=('Arial', 50))
+        self.emp_title.grid(row=0, column=1, columnspan=3)
 
+
+        self.emp_title = tk.Label(self.frame, text="🔍", font=('Arial', 25))
+        self.emp_title.grid(row=1, column=1, padx=0)
         self.search_var = tk.StringVar()#search value to be stored in here
         self.search_entry = tk.Entry(self.frame, textvariable=self.search_var, width=30, font=('Arial', 25))
-        self.search_entry.grid(row=1, column=1)
+        self.search_entry.grid(row=1, column=2, padx=0, sticky=tk.NSEW)
     
         
         self.scroll = tk.Scrollbar(self.frame)
-        self.scroll.grid(row=2, column=2, sticky=tk.NS)
+        self.scroll.grid(row=2, column=3, sticky=tk.NS)
 
-        self.list_box = tk.Listbox(self.frame, width= 50, height=20,yscrollcommand=self.scroll.set, font=('Arial', 15))
+        self.list_box = tk.Listbox(self.frame, height=15,yscrollcommand=self.scroll.set, font=('Arial', 25))
         for employee in self.employees:
             self.list_box.insert(tk.END, f"{employee.fname} {employee.lname}")
-        self.list_box.grid(row=2, column=1)
+        self.list_box.grid(row=2, column=1, columnspan=2, sticky=(tk.W + tk.E))
 
         
 
