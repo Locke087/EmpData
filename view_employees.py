@@ -3,7 +3,9 @@ import tkinter as tk
 import csv
 from single_emp import SingleEmployee
 from edit_employee import EditEmployee
+from add_employee import AddEmployee
 import tkinter.messagebox as messagebox
+
 class ViewEmployee():
     def __init__(self,master, employee_data) -> None:
         self.master = master
@@ -16,7 +18,7 @@ class ViewEmployee():
         self.frame =tk.Frame(width=1000, height=720)
         self.frame.grid(row=0, column=0)
         # In center of screen, create welcome message, username and password input boxes with username and password headings
-        self.user = employee_data
+        self.user: Employee = employee_data
    
         self.employees: list[Employee] = []
         with open('./employee.csv') as file:
@@ -112,7 +114,11 @@ class ViewEmployee():
                 self.list_box.delete(tk.ANCHOR)
             #TODO remove the thing actually from a the database
     def goAdd(self):
-        pass
+        if self.user.permission.lower().replace(' ', '') == 'admin':
+            self.frame.destroy()
+            self.app = AddEmployee(self.master, self.user)
+        else:
+            messagebox.showerror(title="Access Denied", message="You must be an admin in order to access this")
     def goEmp(self):
         #move on to the next window
         #1. Destory the current window
