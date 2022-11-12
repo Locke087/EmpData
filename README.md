@@ -14,3 +14,13 @@ How to send in git update via commandline
 <code>git commit -m "Commit message"</code>
 <br>
 <code> git push -u origin master</code>
+
+<h1>Installation</h1>
+<h2>CMD, Powershell, Unix, and Linux</h2>
+<ol>
+<li>Make sure you have at least Python 3 installed on teh system</li>
+<li>Go into the directory of where the EmpData is stored in</li>
+<li><code>cd EmpData</code></li>
+<li><code>python main.py</code></li>
+<ol>
+
