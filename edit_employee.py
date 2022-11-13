@@ -55,12 +55,37 @@ class EditEmployee():
         self.submit_btn = tk.Button(self.frame, text="💾 Save", command=self.submit, font=('Arial', 25))
         self.submit_btn.grid(row=13, column=2, rowspan=4, sticky=tk.NSEW)
     def submit(self):
-        #TODO do form validation
+      #TODO do form validation
+        allInfo = {}
+        cat = ['EmpID','First','Last','Dept','Title','OfficeEmail','StreetNumber','Apt','City','State','ZipCode',
+        'Country','OfficePhone','PayType','Wage','DateOfBirth','SocialSecurity','StartDate','EndDate','BankInfo','PermissionLevel','Password','EmergencyContact','Deactivated']
         for key, value in self.views.items():
             is_label = key[-6:] == '_label'
             if not is_label:
+                print(key, value.get())
                 #TODO do the form validation with a dictionary to look up how
                 #TODO should be implemented in the employee class
+                with open('./employee.csv') as file:
+                    reader = csv.reader(file)  
+                    for i,row in enumerate(reader):
+                        if i == 0:
+                            continue
+                        name = str(self.views["fname"].get()).strip()
+                        id = self.views["id"].get()
+                        #print(name, id)
+                        db_id = row[0]
+                        db_name = row[1]
+                        db_name = db_name.strip()
+                        #print("here")
+                        if name == db_name and id == db_id:
+                            print('Found it')
+                        #move on to the next window
+                            fullstring = ""
+                            index = 0
+                            for j in row:
+                                allInfo[cat[index]] = j
+                                index += 1
+                            print(*allInfo.items())
                 pass
         
         self.go_back()
