@@ -2,6 +2,8 @@ import tkinter as tk
 import csv
 from Employee import Employee
 from hashlib import sha256
+from shutil import copy
+import os
 class AddEmployee():
     def __init__(self,master, employee: Employee) -> None:
         self.master = master
@@ -48,7 +50,7 @@ class AddEmployee():
         self.make_editable_entry('emergency_contact', employee.emergency_contact)
         self.make_editable_entry('is_deactivated(y/n)', employee.is_deactivated)
         self.make_editable_entry('Password')
-        rlim = 20
+        rlim = 18
         clim = 4
         r, c = 2, 0
         for key, view in self.views.items():
@@ -63,6 +65,8 @@ class AddEmployee():
     def submit(self):
         #TODO do form validation
         row = []
+        if not os.path.exists('./employeetemp.csv'):
+            copy('./employee.csv', 'employeetemp.csv')
         for key, value in self.views.items():
             is_label = key[-6:] == '_label'
             if not is_label:
@@ -77,7 +81,7 @@ class AddEmployee():
                     hash_pass= hasher.hexdigest()
                     row.append(hash_pass)
                 else:
-                    row.append(value)
+                    row.append(value.get())
         with open('./employeetemp.csv', 'a') as file:
             writer = csv.writer(file)
             writer.writerow(row)
@@ -87,10 +91,10 @@ class AddEmployee():
         self.views[key + '_label'] = tk.Label(self.frame, text=key)
         self.views[key] = tk.Entry(self.frame)
     def go_back(self):
-        from view_employees import ViewEmployee
+        from view_employees import ViewEmployeeAdmin
         self.frame.destroy()
         #TODO Insert total data  in place of the user below
-        self.app = ViewEmployee(self.master, employee_data=self.user)
+        self.app = ViewEmployeeAdmin(self.master, employee_data=self.user)
 if __name__ == '__main__':
     window = tk.Tk()
     emp_data = None
