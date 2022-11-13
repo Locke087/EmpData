@@ -25,27 +25,30 @@ class AddEmployee():
         self.make_editable_entry('Employee ID', employee.emp_id)
         self.make_editable_entry('First Name', employee.fname)
         self.make_editable_entry('Last Name', employee.lname)
+        self.make_editable_entry('department', employee.department)
+        self.make_editable_entry('title', employee.title)
+        self.make_editable_entry('office_email', employee.office_email)
+
         self.make_editable_entry('street number', employee.address.street_address)
         self.make_editable_entry('apt number', employee.address.apt_no)
         self.make_editable_entry('city', employee.address.city)
         self.make_editable_entry('state', employee.address.state)
-        self.make_editable_entry('country', employee.address.country)
         self.make_editable_entry('zipcode', employee.address.zip_code)
+        self.make_editable_entry('country', employee.address.country)
+        
         self.make_editable_entry('office_phone', employee.office_phone)
-        self.make_editable_entry('wage', employee.wage)
-        self.make_editable_entry('birthday', employee.birthday)
-        self.make_editable_entry('permission', employee.permission)
-        self.make_editable_entry('title', employee.title)
-        self.make_editable_entry('department', employee.department)
-        self.make_editable_entry('office_email', employee.office_email)
-        self.make_editable_entry('emergency_contact', employee.emergency_contact)
+        self.make_editable_entry('Paytype(Hourly/Salary)')
+        self.make_editable_entry('Wage', employee.wage)
+        self.make_editable_entry('Date of Birth', employee.birthday)
+        self.make_editable_entry('social_secuitry', employee.social_secuitry)
         self.make_editable_entry('start_date', employee.start_date)
         self.make_editable_entry('end_date', employee.end_date)
         self.make_editable_entry('bank_info', employee.bank_info)
-        self.make_editable_entry('is_deactivated', employee.is_deactivated)
-        self.make_editable_entry('social_secuitry', employee.social_secuitry)
+        self.make_editable_entry('permission', employee.permission)
+        self.make_editable_entry('emergency_contact', employee.emergency_contact)
+        self.make_editable_entry('is_deactivated(y/n)', employee.is_deactivated)
         self.make_editable_entry('Password')
-        rlim = 18
+        rlim = 20
         clim = 4
         r, c = 2, 0
         for key, view in self.views.items():
@@ -56,9 +59,10 @@ class AddEmployee():
                 r = 2
                 c += 1
         self.submit_btn = tk.Button(self.frame, text="💾Save", command=self.submit, font=('Arial', 25))
-        self.submit_btn.grid(row=16, column=2, rowspan=4, sticky=tk.NSEW)
+        self.submit_btn.grid(row=18, column=2, rowspan=4, sticky=tk.NSEW)
     def submit(self):
         #TODO do form validation
+        row = []
         for key, value in self.views.items():
             is_label = key[-6:] == '_label'
             if not is_label:
@@ -66,12 +70,17 @@ class AddEmployee():
                 #TODO should be implemented in the employee class
                 #TODO add the employee to the csv file
                 #Hasing the passwrod
+                
                 if key == 'Password':
                     hasher = sha256()
                     hasher.update(value.get().encode('utf-8'))
                     hash_pass= hasher.hexdigest()
-                    #TODO now save the password
-                pass
+                    row.append(hash_pass)
+                else:
+                    row.append(value)
+        with open('./employeetemp.csv', 'a') as file:
+            writer = csv.writer(file)
+            writer.writerow(row)
         
         self.go_back()
     def make_editable_entry(self, key, value=None):
