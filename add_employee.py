@@ -1,6 +1,7 @@
 import tkinter as tk
 import csv
 from Employee import Employee
+from hashlib import sha256
 class AddEmployee():
     def __init__(self,master, employee: Employee) -> None:
         self.master = master
@@ -43,7 +44,7 @@ class AddEmployee():
         self.make_editable_entry('bank_info', employee.bank_info)
         self.make_editable_entry('is_deactivated', employee.is_deactivated)
         self.make_editable_entry('social_secuitry', employee.social_secuitry)
-
+        self.make_editable_entry('Password')
         rlim = 18
         clim = 4
         r, c = 2, 0
@@ -55,7 +56,7 @@ class AddEmployee():
                 r = 2
                 c += 1
         self.submit_btn = tk.Button(self.frame, text="💾Save", command=self.submit, font=('Arial', 25))
-        self.submit_btn.grid(row=14, column=2, rowspan=4, sticky=tk.NSEW)
+        self.submit_btn.grid(row=16, column=2, rowspan=4, sticky=tk.NSEW)
     def submit(self):
         #TODO do form validation
         for key, value in self.views.items():
@@ -64,10 +65,16 @@ class AddEmployee():
                 #TODO do the form validation with a dictionary to look up how
                 #TODO should be implemented in the employee class
                 #TODO add the employee to the csv file
+                #Hasing the passwrod
+                if key == 'Password':
+                    hasher = sha256()
+                    hasher.update(value.get().encode('utf-8'))
+                    hash_pass= hasher.hexdigest()
+                    #TODO now save the password
                 pass
         
         self.go_back()
-    def make_editable_entry(self, key, value):
+    def make_editable_entry(self, key, value=None):
         self.views[key + '_label'] = tk.Label(self.frame, text=key)
         self.views[key] = tk.Entry(self.frame)
     def go_back(self):

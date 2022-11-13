@@ -5,7 +5,7 @@ from single_emp import *
 from edit_employee import EditEmployee
 from add_employee import AddEmployee
 import tkinter.messagebox as messagebox
-
+#TODO clean up all the code for matinence.
 class ViewEmployeeAdmin():
     def __init__(self,master, employee_data) -> None:
         self.master = master

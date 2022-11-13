@@ -16,6 +16,7 @@ class Address:
 
 class Employee():
     def init_regex_expressions(self):
+        #TODO finish all the regex expressions for form validation
         self.reg_refs = {}
         self.reg_refs['fname'] = r'[a-zA-Z]{1,}'
         self.reg_refs['lname'] = r'[a-zA-Z]{1,}'

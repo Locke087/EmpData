@@ -37,7 +37,7 @@ class LoginScreen():
         self.frame.pack()
 
     def login(self):
-        print(self.username.get(), self.password.get())
+
         # Check for username in database. If not found, display username or password error to user, prompt to try again. If found, check for password match. If there is no match, display username or password error to the user, prompt to try again (forgot password? Admin reset or email?)
         # If match is found, check permissions in database, switch to correct search screen based on permissions
         with open('./employee.csv') as file:
