@@ -78,7 +78,10 @@ class EditEmployee():
                 print(key, value.get())
                 #TODO do the form validation with a dictionary to look up how
                 #TODO should be implemented in the employee class
-                with open('./employee.csv') as file:
+                filename = './employee.csv'
+                if os.path.exists('./employeetemp.csv'):
+                    filename = './employeetemp.csv'
+                with open(filename) as file:
                     reader = csv.reader(file)  
                     for i,row in enumerate(reader):
                         if i == 0:

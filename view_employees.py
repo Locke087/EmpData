@@ -22,7 +22,10 @@ class ViewEmployeeAdmin():
         self.user: Employee = employee_data
    
         self.employees: list[Employee] = []
-        with open('./employee.csv') as file:
+        filename = './employee.csv'
+        if os.path.exists('./employeetemp.csv'):
+            filename = './employeetemp.csv'
+        with open(filename) as file:
             reader = csv.reader(file)
             for i, row in enumerate(reader):
                 if i == 0:
@@ -74,8 +77,6 @@ class ViewEmployeeAdmin():
 
         self.go_to_emp = tk.Button(self.frame, text="View employee", command=self.goEmp, font=('Arial', 15))
         self.go_to_emp.grid(row=3, column=1, columnspan=2, pady=10)
-        self.deact_emp_btn = tk.Button(self.frame, text="Deactivate Employee", command=self.goDeactivate, font=('Arial', 15))
-        self.deact_emp_btn.grid(row=4 ,column=1, columnspan=2, pady=10)
         self.scroll.config(command=self.list_box.yview)
 
         #Binding for events such as when the listbox element is selected and when we type in the search box
@@ -129,8 +130,39 @@ class ViewEmployeeAdmin():
         if selected.replace(' ', '') != '' and selected.replace(' ', '') != '---DEACTIVATEDEMPLOYEES---':
             is_yes = messagebox.askyesno('Delete the employee?', 'Are you sure you want to delete the employee')
             if is_yes:
+                employee = None
+                typed = self.list_box.get(tk.ANCHOR).replace(' ', '')
+                if typed == '---DEACTIVATEDEMPLOYEES---':
+                    #Don't even bother if it's the header infomation
+                    return
+                for item in self.employees:
+                    comb = f"{item.emp_id}{item.fname}{item.lname}"
+                    is_ok = typed.lower() in item.fname.lower() or typed.lower() in item.lname.lower() \
+                            or typed.lower() in comb.lower() or typed.lower() in comb.lower()
+                    if is_ok:
+                        employee = item
+                        break
+                rows =[]
+                filename = './employee.csv'
+                if os.path.exists('./employeetemp.csv'):
+                    filename = './employeetemp.csv'
+                with open(filename) as file:
+                    reader = csv.reader(file)
+                    for i, row in enumerate(reader):
+                        if i == 0:
+                            rows.append(row)
+                            continue
+                        emp = Employee()
+                        emp.row_init(row)
+                        if not emp.emp_id == employee.emp_id and not emp.lname == employee.lname:
+                            rows.append(row)
+                with open('./employeetemp.csv', 'w') as file:
+                    writer = csv.writer(file)
+                    for row in rows:
+                        writer.writerow(row)
                 self.list_box.delete(tk.ANCHOR)
-            #TODO remove the thing actually from a the database
+                
+        
     def goAdd(self):
         self.frame.destroy()
         self.app = AddEmployee(self.master, self.user)
@@ -155,9 +187,7 @@ class ViewEmployeeAdmin():
                 break
         self.frame.destroy()
         self.app = SingleEmployeePrivate(self.master, employee)
-    def goDeactivate(self):
-        self.user.is_deactivated = 'y'
-        #TODO update this to the csv database
+    
 
 ####NON_ADMIN####
 class ViewEmployeeEmp():
@@ -175,7 +205,10 @@ class ViewEmployeeEmp():
         self.user: Employee = employee_data
    
         self.employees: list[Employee] = []
-        with open('./employee.csv') as file:
+        filename = './employee.csv'
+        if os.path.exists('./employeetemp.csv'):
+            filename = './employeetemp.csv'
+        with open(filename) as file:
             reader = csv.reader(file)
             for i, row in enumerate(reader):
                 if i == 0:
