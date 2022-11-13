@@ -1,18 +1,18 @@
 import tkinter as tk
 import csv
+from addEmployee import LabelData
 from Employee import Employee
 class EditEmployee():
-    def __init__(self,master,user, employee: Employee) -> None:
+    def __init__(self,master, employee: Employee) -> None:
         self.master = master
         self.master.title("Edit Employee Screen")
         self.master.geometry('1000x720')
         self.frame =tk.Frame(width=1000, height=720)
         self.frame.grid(row=0, column=0)
-        self.user = user
-        self.emp = employee
+        self.user = employee
         self.back_button = tk.Button(self.frame, text='Back', command=self.go_back)
         self.back_button.grid(row=0, column=0, padx=0)
-        self.title_view = tk.Label(self.frame, text=f"{self.emp.fname} {self.emp.lname}'s Profile", font=('Arial', 50))
+        self.title_view = tk.Label(self.frame, text=f"{self.user.fname} {self.user.lname}'s Profile", font=('Arial', 50))
         self.title_view.grid(row=0, column=1, padx=0, sticky=tk.W)
         #UI desing 
         #Have a list of entries. Simply submit the full entry with
@@ -55,7 +55,7 @@ class EditEmployee():
         self.submit_btn = tk.Button(self.frame, text="💾 Save", command=self.submit, font=('Arial', 25))
         self.submit_btn.grid(row=13, column=2, rowspan=4, sticky=tk.NSEW)
     def submit(self):
-      #TODO do form validation
+        #TODO do form validation
         allInfo = {}
         cat = ['EmpID','First','Last','Dept','Title','OfficeEmail','StreetNumber','Apt','City','State','ZipCode',
         'Country','OfficePhone','PayType','Wage','DateOfBirth','SocialSecurity','StartDate','EndDate','BankInfo','PermissionLevel','Password','EmergencyContact','Deactivated']
@@ -86,6 +86,10 @@ class EditEmployee():
                                 allInfo[cat[index]] = j
                                 index += 1
                             print(*allInfo.items())
+                        
+                   
+                    
+                
                 pass
         
         self.go_back()
@@ -94,13 +98,10 @@ class EditEmployee():
         self.views[key] = tk.Entry(self.frame)
         self.views[key].insert(0, value)
     def go_back(self):
-        from view_employees import ViewEmployeeEmp, ViewEmployeeAdmin
+        from view_employees import ViewEmployee
         self.frame.destroy()
         #TODO Insert total data  in place of the user below
-        if self.user.permission == 'admin':
-            self.app = ViewEmployeeAdmin(self.master, employee_data=self.user)
-        else:
-            self.app = ViewEmployeeEmp(self.master, employee_data=self.user)
+        self.app = ViewEmployee(self.master, employee_data=self.user)
 if __name__ == '__main__':
     window = tk.Tk()
     emp_data = None
