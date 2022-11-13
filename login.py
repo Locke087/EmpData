@@ -3,7 +3,7 @@ from tkinter import ttk
 from tkinter import messagebox
 import csv
 from hashlib import sha256
-from view_employees import ViewEmployee
+from view_employees import ViewEmployeeAdmin, ViewEmployeeEmp
 from Employee import Employee
 class LoginScreen():
     def __init__(self, master: tk.Tk) -> None:
@@ -65,7 +65,10 @@ class LoginScreen():
                     employee = Employee()
                     employee.row_init(row)
                     #Must be initialized to variable or it will get dumped by the garbage collector
-                    self.app = ViewEmployee(self.master, employee)
+                    if employee.permission == 'admin':
+                        self.app = ViewEmployeeAdmin(self.master, employee)
+                    else:
+                        self.app = ViewEmployeeEmp(self.master, employee)
                     #The code above loads the window
                     #Now we return to avoid getting an error message
                     return
