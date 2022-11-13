@@ -1,4 +1,5 @@
 import tkinter as tk
+import os
 import csv
 from addEmployee import LabelData
 from Employee import Employee
@@ -57,10 +58,17 @@ class EditEmployee():
     def submit(self):
         #TODO do form validation
         allInfo = {}
+        data = {}
+        holder = []
+        dataHolder = [employee.emp_id, employee.fname, employee.lname, employee.department, employee.title, employee.office_email
+        ,employee.address.street_address, employee.address.apt_no, employee.address.city, employee.address.state, employee.address.zip_code
+        , employee.address.country, employee.office_phone, "skip", employee.wage, employee.birthday, employee.social_secuitry,  
+        employee.start_date,  employee.end_date, employee.bank_info, employee.permission,  "skip", employee.emergency_contact , employee.is_deactivated]
         cat = ['EmpID','First','Last','Dept','Title','OfficeEmail','StreetNumber','Apt','City','State','ZipCode',
         'Country','OfficePhone','PayType','Wage','DateOfBirth','SocialSecurity','StartDate','EndDate','BankInfo','PermissionLevel','Password','EmergencyContact','Deactivated']
         for key, value in self.views.items():
             is_label = key[-6:] == '_label'
+            found = False
             if not is_label:
                 print(key, value.get())
                 #TODO do the form validation with a dictionary to look up how
@@ -70,27 +78,61 @@ class EditEmployee():
                     for i,row in enumerate(reader):
                         if i == 0:
                             continue
-                        name = str(self.views["fname"].get()).strip()
-                        id = self.views["id"].get()
-                        #print(name, id)
+                        id = employee.emp_id
+                        name = employee.fname
+                       
                         db_id = row[0]
                         db_name = row[1]
                         db_name = db_name.strip()
                         #print("here")
                         if name == db_name and id == db_id:
-                            print('Found it')
+                            print('Found it ', name, db_name, db_id, id)
+                            found = True
+                           
                         #move on to the next window
                             fullstring = ""
+                            index = 0
+                            #allInfo.clear()
+                            for keys, j in self.views.items():
+                                 is_label = keys[-6:] == '_label'
+                                 if not is_label:
+                                    allInfo[cat[index]] = j.get()
+                                    dataHolder[index] = j.get()
+                                    index += 1
+                           # print(*allInfo.items())
+                            holder.append(allInfo.copy())
+                            allInfo.clear()
+
+                           
+                        else:
                             index = 0
                             for j in row:
                                 allInfo[cat[index]] = j
                                 index += 1
-                            print(*allInfo.items())
+                            #print(*allInfo.items())     
+                            holder.append(allInfo.copy())
+                            allInfo.clear()   
                         
-                   
-                    
-                
-                pass
+                if found:
+                    print("wee ", holder)
+                    datestring = "temp"
+                    filename = f"employee{datestring}.csv"
+                    newfile = not os.path.exists(filename)
+                    if os.path.exists(filename):
+                        os.remove(filename)
+                 
+                    for data in holder:
+                        newfile = not os.path.exists(filename)
+                        with open(filename, 'a') as fh:
+                            csvwriter = csv.DictWriter(fh, fieldnames=data.keys())
+                            if newfile:
+                                csvwriter.writeheader()
+                            csvwriter.writerow(data)  
+                      
+                 
+                    break                            
+               
+        pass
         
         self.go_back()
     def make_editable_entry(self, key, value):
