@@ -71,6 +71,7 @@ class EditEmployee():
         cat = ['EmpID','First','Last','Dept','Title','OfficeEmail','StreetNumber','Apt',
                 'City','State','ZipCode','Country','OfficePhone','PayType','Wage','DateOfBirth',
                 'SocialSecurity','StartDate','EndDate','BankInfo','PermissionLevel','EmergencyContact','Deactivated','Password']
+        assert len(self.views) > 0
         for key, value in self.views.items():
             is_label = key[-6:] == '_label'
             found = False
@@ -79,8 +80,8 @@ class EditEmployee():
                 #TODO do the form validation with a dictionary to look up how
                 #TODO should be implemented in the employee class
                 filename = './employee.csv'
-                if os.path.exists('./employeetemp.csv'):
-                    filename = './employeetemp.csv'
+                #if os.path.exists('./employeetemp.csv'):
+                    #filename = './employeetemp.csv'
                 with open(filename) as file:
                     reader = csv.reader(file)  
                     for i,row in enumerate(reader):
@@ -98,7 +99,6 @@ class EditEmployee():
                             found = True
                            
                         #move on to the next window
-                            fullstring = ""
                             index = 0
                             #allInfo.clear()
                             for keys, j in self.views.items():
@@ -125,7 +125,8 @@ class EditEmployee():
                             allInfo.clear()   
                         
                 if found:
-                    print("wee ", holder)
+                    assert len(holder) > 0
+                    #print("wee ", holder)
                     datestring = "temp"
                     filename = f"employee{datestring}.csv"
                     newfile = not os.path.exists(filename)
@@ -156,6 +157,7 @@ class EditEmployee():
             self.app = ViewEmployeeAdmin(self.master, employee_data=self.user)
         else:
             self.app = ViewEmployeeEmp(self.master, employee_data=self.user)
+
 if __name__ == '__main__':
     window = tk.Tk()
     emp_data = None
@@ -169,5 +171,7 @@ if __name__ == '__main__':
                     break
     employee = Employee()
     employee.row_init(emp_data)
-    frame = EditEmployee(window, employee)
+    user = Employee()
+    user.row_init(emp_data)
+    frame = EditEmployee(window, user ,employee)
     window.mainloop()
