@@ -1,15 +1,12 @@
 import shutil
 from subprocess import Popen, PIPE
-process = Popen('python --version', stdout=PIPE, stderr=None, shell=True)
-output = process.communicate()[0]
-if 'python' in output:
-    print('You need to install python')
-    quit()
+#THIS is not working, need to fix and basically copy and pasted from the code
+#TODO get python version
 
 
-
-#Move it to the desktop in order
+#TODO: Move the bat file here  to the desktop in folder
 shutil.move('./project_folder/lauch.bat', '“path/to/Desktop”')
+#TODO: Move all theproject folder to desktop folder
 shutil.move('./project_folder', 'path/to/Desktop')
 
 
