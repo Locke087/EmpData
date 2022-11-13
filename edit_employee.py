@@ -80,8 +80,8 @@ class EditEmployee():
                 #TODO do the form validation with a dictionary to look up how
                 #TODO should be implemented in the employee class
                 filename = './employee.csv'
-                #if os.path.exists('./employeetemp.csv'):
-                    #filename = './employeetemp.csv'
+                if os.path.exists('./employeetemp.csv'):
+                    filename = './employeetemp.csv'
                 with open(filename) as file:
                     reader = csv.reader(file)  
                     for i,row in enumerate(reader):
@@ -135,7 +135,7 @@ class EditEmployee():
                  
                     for data in holder:
                         newfile = not os.path.exists(filename)
-                        with open(filename, 'a') as fh:
+                        with open(filename, 'a', newline='', encoding='utf-8') as fh:
                             csvwriter = csv.DictWriter(fh, fieldnames=data.keys())
                             if newfile:
                                 csvwriter.writeheader()
@@ -161,6 +161,7 @@ class EditEmployee():
 if __name__ == '__main__':
     window = tk.Tk()
     emp_data = None
+    
     with open('./employee.csv') as file:
             reader = csv.reader(file)
             for i,row in enumerate(reader):

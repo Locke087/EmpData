@@ -82,7 +82,14 @@ class AddEmployee():
                     row.append(hash_pass)
                 else:
                     row.append(value.get())
-        with open('./employeetemp.csv', 'a') as file:
+        assert len(row) > 0
+        assert row[0] != ""
+        assert row[1] != ""
+        assert row[20] != ""
+        assert row[22] != ""
+        assert row[23] != ""
+        print(len(row), " Iam big")
+        with open('./employeetemp.csv', 'a', newline='', encoding='utf-8') as file:
             writer = csv.writer(file)
             writer.writerow(row)
         
