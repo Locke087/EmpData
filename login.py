@@ -5,6 +5,7 @@ import csv
 from hashlib import sha256
 from view_employees import ViewEmployeeAdmin, ViewEmployeeEmp
 from Employee import Employee
+import os
 class LoginScreen():
     def __init__(self, master: tk.Tk) -> None:
         super().__init__()
@@ -55,7 +56,7 @@ class LoginScreen():
                 hash_pass = self.password.get().encode('utf-8')
                 hasher.update(hash_pass)
                 hash_pass = hasher.hexdigest()
-                db_password = row[21]
+                db_password = row[-1]
                 
                 if hash_pass == db_password and self.username.get() == db_username:
                     

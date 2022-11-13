@@ -5,6 +5,7 @@ from single_emp import *
 from edit_employee import EditEmployee
 from add_employee import AddEmployee
 import tkinter.messagebox as messagebox
+import os
 #TODO clean up all the code for matinence.
 class ViewEmployeeAdmin():
     def __init__(self,master, employee_data) -> None:
@@ -156,6 +157,7 @@ class ViewEmployeeAdmin():
         self.app = SingleEmployeePrivate(self.master, employee)
     def goDeactivate(self):
         self.user.is_deactivated = 'y'
+        #TODO update this to the csv database
 
 ####NON_ADMIN####
 class ViewEmployeeEmp():
@@ -165,7 +167,7 @@ class ViewEmployeeEmp():
         self.master.geometry('1000x720')
 
         #TODO actually document this document
-        #TODO Make the thing read once only or use asyncrounous programming
+        #TODO Make the thing read once only 
         #TODO (cont) to make the page load more seemless
         self.frame =tk.Frame(width=1000, height=720)
         self.frame.grid(row=0, column=0)
@@ -180,7 +182,8 @@ class ViewEmployeeEmp():
                     continue
                 emp = Employee()
                 emp.row_init(row)
-                self.employees.append(emp)
+                if emp.permission.lower() != 'admin':
+                    self.employees.append(emp)
         
         self.usertitle = tk.Label(self.frame, text=f'Hello, {self.user.fname} {self.user.lname}', font=('Arial', 35), anchor=tk.W)
         self.usertitle.grid(row=0, column=0, padx=40)

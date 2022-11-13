@@ -5,7 +5,7 @@ from hashlib import sha256
 class AddEmployee():
     def __init__(self,master, employee: Employee) -> None:
         self.master = master
-        self.master.title("Edit Employee Screen")
+        self.master.title("Add Employee Screen")
         self.master.resizable(width=False, height=False)
         self.master.geometry('1000x720')
         self.frame =tk.Frame(width=1000, height=720)

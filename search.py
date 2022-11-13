@@ -3,7 +3,7 @@ from tkinter import messagebox, ttk
 import csv
 def search():
     print(id.get(), name.get())
-  
+
     with open('./employee.csv') as file:
         reader = csv.reader(file)
        

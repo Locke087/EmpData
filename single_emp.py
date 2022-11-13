@@ -68,8 +68,7 @@ class SingleEmployeePub():
         self.master.title("View Employee Screen")
         self.master.geometry('1000x720')
 
-        #TODO Binding is a tiny bit buggy when clicking. Maybe removing the feature to begin with?
-        #TODO actually document this document
+        
         self.frame =tk.Frame(width=1000, height=720)
         self.frame.grid(row=0, column=0)
         # In center of screen, create welcome message, username and password input boxes with username and password headings
