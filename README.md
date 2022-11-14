@@ -24,3 +24,12 @@ How to send in git update via commandline
 <li><code>python main.py</code></li>
 <ol>
 
+How to login
+
+Admin Login
+ID: 1
+Password: hash
+
+Employee Login
+ID: 11
+Password: hash
