@@ -186,7 +186,7 @@ class ViewEmployeeAdmin():
                 employee = item
                 break
         self.frame.destroy()
-        self.app = SingleEmployeePrivate(self.master, employee)
+        self.app = SingleEmployeePrivate(self.master,self.user, employee)
     
 
 ####NON_ADMIN####
@@ -245,6 +245,7 @@ class ViewEmployeeEmp():
         for employee in self.employees:
             self.list_box.insert(tk.END, f"{employee.fname} {employee.lname}")
         self.list_box.grid(row=2, column=1, columnspan=2, sticky=(tk.W + tk.E))
+        self.list_box.activate(0)
 
         
 
@@ -297,7 +298,7 @@ class ViewEmployeeEmp():
         #TODO which will have to perform a quick search
         employee = self.user
         self.frame.destroy()
-        self.app = SingleEmployeePrivate(self.master, employee)
+        self.app = SingleEmployeePrivate(self.master,self.user, employee)
     def goEmpPub(self):
         #move on to the next window
         #1. Destory the current window
@@ -315,6 +316,6 @@ class ViewEmployeeEmp():
                 employee = item
                 break
         self.frame.destroy()
-        self.app = SingleEmployeePub(self.master, employee)
+        self.app = SingleEmployeePub(self.master,self.user, employee)
 
         

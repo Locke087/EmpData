@@ -3,7 +3,7 @@ import tkinter as tk
 import csv
 
 class SingleEmployeePrivate():
-    def __init__(self,master, employee) -> None:
+    def __init__(self,master, viewer, employee) -> None:
         self.master = master
         self.master.title("View Employee Screen")
         self.master.geometry('1000x720')
@@ -14,6 +14,7 @@ class SingleEmployeePrivate():
         self.frame.grid(row=0, column=0)
         # In center of screen, create welcome message, username and password input boxes with username and password headings
         self.user = employee
+        self.viewer = viewer
         self.back_button = tk.Button(self.frame, text='Back', command=self.go_back)
         self.back_button.grid(row=0, column=0, padx=0)
         self.title_view = tk.Label(self.frame, text=f"{self.user.fname} {self.user.lname}'s Profile", font=('Arial', 50))
@@ -57,13 +58,13 @@ class SingleEmployeePrivate():
         from view_employees import ViewEmployeeEmp, ViewEmployeeAdmin
         self.frame.destroy()
         #TODO Insert total data  in place of the user below
-        if self.user.permission == 'admin':
-            self.app = ViewEmployeeAdmin(self.master, employee_data=self.user)
+        if self.viewer.permission == 'admin':
+            self.app = ViewEmployeeAdmin(self.master, employee_data=self.viewer)
         else:
-            self.app = ViewEmployeeEmp(self.master, employee_data=self.user)
+            self.app = ViewEmployeeEmp(self.master, employee_data=self.viewer)
 
 class SingleEmployeePub():
-    def __init__(self,master, employee: Employee) -> None:
+    def __init__(self,master,viewer,  employee: Employee) -> None:
         self.master = master
         self.master.title("View Employee Screen")
         self.master.geometry('1000x720')
@@ -73,6 +74,7 @@ class SingleEmployeePub():
         self.frame.grid(row=0, column=0)
         # In center of screen, create welcome message, username and password input boxes with username and password headings
         self.user = employee
+        self.viewer = viewer
         self.back_button = tk.Button(self.frame, text='Back', command=self.go_back)
         self.back_button.grid(row=0, column=0, padx=0)
         self.title_view = tk.Label(self.frame, text=f"{self.user.fname} {self.user.lname}'s Profile", font=('Arial', 50))
@@ -103,4 +105,4 @@ class SingleEmployeePub():
         from view_employees import ViewEmployeeEmp
         self.frame.destroy()
         #TODO Insert total data  in place of the user below
-        self.app = ViewEmployeeEmp(self.master, employee_data=self.user)
+        self.app = ViewEmployeeEmp(self.master, employee_data=self.viewer)
