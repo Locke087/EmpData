@@ -11,7 +11,7 @@ class ViewEmployeeAdmin():
     def __init__(self,master, employee_data) -> None:
         self.master = master
         self.master.title("View Employee Screen")
-        self.master.geometry('1000x720')
+        self.master.geometry('1200x900')
 
         #TODO actually document this document
         #TODO Make the thing read once only or use asyncrounous programming
@@ -77,6 +77,7 @@ class ViewEmployeeAdmin():
 
         self.go_to_emp = tk.Button(self.frame, text="View employee", command=self.goEmp, font=('Arial', 15))
         self.go_to_emp.grid(row=3, column=1, columnspan=2, pady=10)
+        
         self.scroll.config(command=self.list_box.yview)
 
         #Binding for events such as when the listbox element is selected and when we type in the search box

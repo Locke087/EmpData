@@ -1,5 +1,6 @@
 from Employee import Employee
 import tkinter as tk
+from tkinter import messagebox
 import csv
 
 class SingleEmployeePrivate():
@@ -17,6 +18,8 @@ class SingleEmployeePrivate():
         self.viewer = viewer
         self.back_button = tk.Button(self.frame, text='Back', command=self.go_back)
         self.back_button.grid(row=0, column=0, padx=0)
+        self.back_button1 = tk.Button(self.frame, text='Print Pay', command=self.printpayInfo)
+        self.back_button1.grid(row=0, column=2, padx=0)
         self.title_view = tk.Label(self.frame, text=f"{self.user.fname} {self.user.lname}'s Profile", font=('Arial', 50))
         self.title_view.grid(row=0, column=1, padx=0, sticky=tk.W)
         self.views: dict[tk.Label] = {}
@@ -62,6 +65,13 @@ class SingleEmployeePrivate():
             self.app = ViewEmployeeAdmin(self.master, employee_data=self.viewer)
         else:
             self.app = ViewEmployeeEmp(self.master, employee_data=self.viewer)
+    def printpayInfo(self):
+        messagebox.showinfo("payslip has been generated", "it is payslip.txt")
+        with open("payslip.txt", 'w') as fh:
+            fh.write(f"payslip for {self.user.fname} {self.user.lname}" + "\n")
+            fh.write(f"Bank is {self.user.bank_info}" + "\n")
+            fh.write(f"Pay is {self.user.wage}$ {self.user.pay_type}" + "\n")
+        
 
 class SingleEmployeePub():
     def __init__(self,master,viewer,  employee: Employee) -> None:
@@ -77,6 +87,8 @@ class SingleEmployeePub():
         self.viewer = viewer
         self.back_button = tk.Button(self.frame, text='Back', command=self.go_back)
         self.back_button.grid(row=0, column=0, padx=0)
+        self.back_button1 = tk.Button(self.frame, text='Print Pay', command=self.printpayInfo)
+        self.back_button1.grid(row=0, column=2, padx=0)
         self.title_view = tk.Label(self.frame, text=f"{self.user.fname} {self.user.lname}'s Profile", font=('Arial', 50))
         self.title_view.grid(row=0, column=1, padx=0, sticky=tk.W)
         self.views: dict[tk.Label] = {}
