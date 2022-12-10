@@ -1,5 +1,8 @@
 from Employee import Employee
 import tkinter as tk
+import tkinter as tk
+from tkinter import *
+from tkinter.ttk import *
 import csv
 from single_emp import *
 from edit_employee import EditEmployee
@@ -12,6 +15,15 @@ class ViewEmployeeAdmin():
         self.master = master
         self.master.title("View Employee Screen")
         self.master.geometry('1200x900')
+        self.master['bg'] ='cyan'
+        style = Style()
+        style.configure('W.TLabel', font =
+               ('Arial', 50, 'bold', 'underline'),
+                foreground = 'red', background = 'blue')
+        style.configure('W.TButton', font =
+               ('Arial', 25, 'bold', 'underline'),
+                foreground = 'orange', background = 'black')
+
 
         #TODO actually document this document
         #TODO Make the thing read once only or use asyncrounous programming

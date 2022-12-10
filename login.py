@@ -15,35 +15,35 @@ class LoginScreen():
         style = Style()
         style.configure('W.TLabel', font =
                ('Arial', 50, 'bold', 'underline'),
-                foreground = 'red', background = 'blue')
+                foreground = 'black', background = 'white')
         style.configure('W.TButton', font =
                ('Arial', 25, 'bold', 'underline'),
-                foreground = 'orange', background = 'black')
+                foreground = 'black', background = 'black')
  
         self.master = master
         self.master.title("Login Screen")
         self.master.geometry('1000x720')
-        self.master['bg'] ='blue'
-        self.frame = tk.Frame(self.master, width=1000, height=720, background="blue")
+        self.master['bg'] ='white'
+        self.frame = tk.Frame(self.master, width=1000, height=720, background="white")
         # In center of screen, create welcome message, username and password input boxes with username and password headings
         self.welcome_message = Label(self.frame, text="Welcome", style='W.TLabel')
 
         # Take in both username and password as input from the user
-        self.id_message = tk.Label(self.frame, text="Employee ID", font=('Arial', 25), background='yellow')
+        self.id_message = tk.Label(self.frame, text="Employee ID", font=('Arial', 25), foreground="white", background='black')
 
-        self.id = tk.Entry(self.frame, font=('Arial', 25))
+        self.id = tk.Entry(self.frame, font=('Arial', 25), background='silver')
 
-        self.id_line = tk.Label(self.frame, text="", font=('Arial', 25), background='blue' )
-        self.id_line2 = tk.Label(self.frame, text="", font=('Arial', 25), background='blue' )
-        self.id_line3 = tk.Label(self.frame, text="", font=('Arial', 25), background='blue' )
+        self.id_line = tk.Label(self.frame, text="", font=('Arial', 25), background='white' )
+        self.id_line2 = tk.Label(self.frame, text="", font=('Arial', 25), background='white' )
+        self.id_line3 = tk.Label(self.frame, text="", font=('Arial', 25), background='white' )
 
 
-        self.pass_message = tk.Label(self.frame, text="Password", font=('Arial', 25), background='yellow')
+        self.pass_message = tk.Label(self.frame, text="Password", font=('Arial', 25), background='black', foreground="white")
 
         self.password = tk.StringVar()#Password is stored here
-        self.pass_entry = tk.Entry(self.frame, textvariable=self.password, show="*", font=('Arial', 25))
+        self.pass_entry = tk.Entry(self.frame, textvariable=self.password, show="*", font=('Arial', 25), background='silver')
 
-        self.submit = Button(self.frame, text="Submit", command=self.login, style='W.TButton')
+        self.submit = tk.Button(self.frame, text="Submit", command=self.login, font=('Arial', 25, 'bold', 'underline'), background="black", foreground="white")
         #Pack the members
         self.welcome_message.pack()
         self.id_line.pack()
