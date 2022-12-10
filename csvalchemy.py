@@ -22,7 +22,7 @@ class CSVManager():
     def add_employee(self, emp):
         pass
     def archive_employee(self, emp):
-        pass
+        self.edit_employee()
     def edit_employee(self,prev_id: int, employee: Employee):
         allInfo = {}
         data = {}
@@ -46,7 +46,10 @@ class CSVManager():
                 db_name = row[1]
                 db_name = db_name.strip()
                 #print("here")
-                if name == db_name and id == db_id:
+                #We need the ID because it's a unique identifier
+                #We use the previous one because an employer may decide to change
+                #it for whatever reason
+                if prev_id == db_id:
                     print('Found it ', name, db_name, db_id, id)
                     found = True
                     
