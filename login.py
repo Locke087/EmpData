@@ -1,5 +1,6 @@
 import tkinter as tk
-from tkinter import ttk
+from tkinter import *
+from tkinter.ttk import *
 from tkinter import messagebox
 import csv
 from hashlib import sha256
@@ -10,31 +11,48 @@ import csvalchemy
 class LoginScreen():
     def __init__(self, master: tk.Tk) -> None:
         super().__init__()
+        # This will create style object
+        style = Style()
+        style.configure('W.TLabel', font =
+               ('Arial', 50, 'bold', 'underline'),
+                foreground = 'red', background = 'blue')
+        style.configure('W.TButton', font =
+               ('Arial', 25, 'bold', 'underline'),
+                foreground = 'orange', background = 'black')
+ 
         self.master = master
         self.master.title("Login Screen")
         self.master.geometry('1000x720')
-        self.frame = tk.Frame(self.master, width=1000, height=720)
+        self.master['bg'] ='blue'
+        self.frame = tk.Frame(self.master, width=1000, height=720, background="blue")
         # In center of screen, create welcome message, username and password input boxes with username and password headings
-        self.welcome_message = tk.Label(self.frame, text="Welcome", font=('Arial', 50))
+        self.welcome_message = Label(self.frame, text="Welcome", style='W.TLabel')
 
         # Take in both username and password as input from the user
-        self.id_message = tk.Label(self.frame, text="Employee ID", font=('Arial', 25))
+        self.id_message = tk.Label(self.frame, text="Employee ID", font=('Arial', 25), background='yellow')
 
         self.id = tk.Entry(self.frame, font=('Arial', 25))
 
+        self.id_line = tk.Label(self.frame, text="", font=('Arial', 25), background='blue' )
+        self.id_line2 = tk.Label(self.frame, text="", font=('Arial', 25), background='blue' )
+        self.id_line3 = tk.Label(self.frame, text="", font=('Arial', 25), background='blue' )
 
-        self.pass_message = tk.Label(self.frame, text="Password", font=('Arial', 25))
+
+        self.pass_message = tk.Label(self.frame, text="Password", font=('Arial', 25), background='yellow')
 
         self.password = tk.StringVar()#Password is stored here
         self.pass_entry = tk.Entry(self.frame, textvariable=self.password, show="*", font=('Arial', 25))
 
-        self.submit = tk.Button(self.frame, text="Submit", command=self.login, font=('Arial', 25))
+        self.submit = Button(self.frame, text="Submit", command=self.login, style='W.TButton')
         #Pack the members
         self.welcome_message.pack()
+        self.id_line.pack()
         self.id_message.pack()
         self.id.pack()
+        self.id_line2.pack()
         self.pass_message.pack()
         self.pass_entry.pack()
+        self.id_line3.pack()
         self.submit.pack()
         self.frame.pack()
 
