@@ -6,6 +6,7 @@ from hashlib import sha256
 from view_employees import ViewEmployeeAdmin, ViewEmployeeEmp
 from Employee import Employee
 import os
+import csvalchemy
 class LoginScreen():
     def __init__(self, master: tk.Tk) -> None:
         super().__init__()
@@ -17,9 +18,9 @@ class LoginScreen():
         self.welcome_message = tk.Label(self.frame, text="Welcome", font=('Arial', 50))
 
         # Take in both username and password as input from the user
-        self.username_message = tk.Label(self.frame, text="Employee ID", font=('Arial', 25))
+        self.id_message = tk.Label(self.frame, text="Employee ID", font=('Arial', 25))
 
-        self.username = tk.Entry(self.frame, font=('Arial', 25))
+        self.id = tk.Entry(self.frame, font=('Arial', 25))
 
 
         self.pass_message = tk.Label(self.frame, text="Password", font=('Arial', 25))
@@ -30,8 +31,8 @@ class LoginScreen():
         self.submit = tk.Button(self.frame, text="Submit", command=self.login, font=('Arial', 25))
         #Pack the members
         self.welcome_message.pack()
-        self.username_message.pack()
-        self.username.pack()
+        self.id_message.pack()
+        self.id.pack()
         self.pass_message.pack()
         self.pass_entry.pack()
         self.submit.pack()
@@ -41,38 +42,26 @@ class LoginScreen():
 
         # Check for username in database. If not found, display username or password error to user, prompt to try again. If found, check for password match. If there is no match, display username or password error to the user, prompt to try again (forgot password? Admin reset or email?)
         # If match is found, check permissions in database, switch to correct search screen based on permissions
-        with open('./employee.csv') as file:
-            reader = csv.reader(file)
-        
-            for i,row in enumerate(reader):
-                #Skip it if it's the first row
-                #because that contains the field names
-                #not the actual data invovled
-                if i == 0:
-                    continue
-                hasher = sha256()
-                db_username = row[0]
-
-                hash_pass = self.password.get().encode('utf-8')
-                hasher.update(hash_pass)
-                hash_pass = hasher.hexdigest()
-                db_password = row[-1]
-                
-                if hash_pass == db_password and self.username.get() == db_username:
-                    
-                    #move on to the next window
-                    #1. Destory the current window
-                    self.frame.destroy()
-                    employee = Employee()
-                    employee.row_init(row)
-                    #Must be initialized to variable or it will get dumped by the garbage collector
-                    if employee.permission == 'admin':
-                        self.app = ViewEmployeeAdmin(self.master, employee)
-                    else:
-                        self.app = ViewEmployeeEmp(self.master, employee)
-                    #The code above loads the window
-                    #Now we return to avoid getting an error message
-                    return
+        employee = csvalchemy.singleton.search_emp_id(self.id.get())
+        hasher = sha256()
+        hash_pass = self.password.get().encode('utf-8')
+        hasher.update(hash_pass)
+        hash_pass = hasher.hexdigest()
+        #the variable is for null checking
+        if employee and employee.password == hash_pass:
+            
+            #move on to the next window
+            #1. Destory the current window
+            self.frame.destroy()
+ 
+            #Must be initialized to variable or it will get dumped by the garbage collector
+            if employee.permission == 'admin':
+                self.app = ViewEmployeeAdmin(self.master, employee)
+            else:
+                self.app = ViewEmployeeEmp(self.master, employee)
+            #The code above loads the window
+            #Now we return to avoid getting an error message
+            return
                     
 
 

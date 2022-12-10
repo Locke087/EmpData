@@ -61,6 +61,9 @@ class Employee():
         self.permission: str = row[20]
         self.emergency_contact: Dict[str, str] = row[21]
         self.is_deactivated: bool = row[22]
+        self.password = row[23]
+        self.route = row[24]
+        self.acct_no = row[25]
 
         self.init_regex_expressions()
         
