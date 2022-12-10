@@ -4,6 +4,7 @@ from Employee import Employee
 from hashlib import sha256
 from shutil import copy
 import os
+import csvalchemy
 class AddEmployee():
     def __init__(self,master, employee: Employee) -> None:
         self.master = master
@@ -48,8 +49,10 @@ class AddEmployee():
         self.make_editable_entry('bank_info', employee.bank_info)
         self.make_editable_entry('permission', employee.permission)
         self.make_editable_entry('emergency_contact', employee.emergency_contact)
-        self.make_editable_entry('is_deactivated(y/n)', employee.is_deactivated)
+        self.make_editable_entry('Deactivated', employee.is_deactivated)
         self.make_editable_entry('Password')
+        self.make_editable_entry('Route')
+        self.make_editable_entry('Account Number')
         rlim = 18
         clim = 4
         r, c = 2, 0
@@ -89,10 +92,7 @@ class AddEmployee():
         assert row[22] != ""
         assert row[23] != ""
         print(len(row), " Iam big")
-        with open('./employeetemp.csv', 'a', newline='', encoding='utf-8') as file:
-            writer = csv.writer(file)
-            writer.writerow(row)
-        
+        csvalchemy.singleton.add_employee(row)
         self.go_back()
     def make_editable_entry(self, key, value=None):
         self.views[key + '_label'] = tk.Label(self.frame, text=key)

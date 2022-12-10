@@ -19,10 +19,13 @@ class CSVManager():
                 emp = Employee(row)
                 data.append(row)
         return
-    def add_employee(self, emp):
-        pass
-    def archive_employee(self, emp):
-        self.edit_employee()
+    def add_employee(self, row):
+        with open('./employeetemp.csv', 'a', newline='', encoding='utf-8') as file:
+            writer = csv.writer(file)
+            writer.writerow(row)
+        
+    def archive_employee(self, emp: Employee):
+        self.edit_employee(emp.emp_id, emp)
     def edit_employee(self,prev_id: int, employee: Employee):
         allInfo = {}
         data = {}
@@ -94,7 +97,7 @@ class CSVManager():
                         csvwriter.writeheader()
                     csvwriter.writerow(data)  
                 
-            
+        self.path = filename #update it to the temp
                          
     def search_emp_id(self, idx):
         '''Search for the employee by it's ID'''
