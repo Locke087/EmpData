@@ -18,7 +18,7 @@ class CSVManager():
                     continue
                 emp = Employee(row)
                 data.append(row)
-        return
+        return data
     def add_employee(self, row):
         with open('./employeetemp.csv', 'a', newline='', encoding='utf-8') as file:
             writer = csv.writer(file)
