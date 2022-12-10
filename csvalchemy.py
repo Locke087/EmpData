@@ -8,21 +8,91 @@ class CSVManager():
         self.path = "./employee.csv"
         if "employeetemp" in os.listdir('.'):
             self.path = './employeetemp.csv'
+        self.data = self.get_rows()
+    def get_rows(self):
+        data = []
         with open(self.path, 'r') as f:
             reader = csv.reader(f)
             for i,row in enumerate(reader):
                 if i==0:
                     continue
                 emp = Employee(row)
-                self.data.append(row)
-        
-
+                data.append(row)
+        return
     def add_employee(self, emp):
         pass
     def archive_employee(self, emp):
         pass
-    def edit_employee(self, emp):
-        pass
+    def edit_employee(self,prev_id: int, employee: Employee):
+        allInfo = {}
+        data = {}
+        holder = []
+       
+        cat = ['EmpID','First','Last','Dept','Title','OfficeEmail','StreetNumber','Apt',
+                'City','State','ZipCode','Country','OfficePhone','PayType','Wage','DateOfBirth',
+                'SocialSecurity','StartDate','EndDate','BankInfo','PermissionLevel','EmergencyContact','Deactivated','Password','Route', 'Account']
+        filename = './employee.csv'
+ 
+        with open(filename) as file:
+            reader = csv.reader(file)
+            for i,row in enumerate(reader):
+                if i == 0:
+                    continue
+
+                id = employee.emp_id
+                name = employee.fname
+                
+                db_id = row[0]
+                db_name = row[1]
+                db_name = db_name.strip()
+                #print("here")
+                if name == db_name and id == db_id:
+                    print('Found it ', name, db_name, db_id, id)
+                    found = True
+                    
+
+                    index = 0
+                    #allInfo.clear()
+                    for j in employee.row:
+                            allInfo[cat[index]] = j
+                            index += 1
+                            
+                        
+                    # print(*allInfo.items())
+                    allInfo['Password'] = employee.password
+                    holder.append(allInfo.copy())
+                    
+                    allInfo.clear()
+
+                    
+                else:
+                    index = 0
+                    for j in row:
+                        allInfo[cat[index]] = j
+                        index += 1
+                    #print(*allInfo.items())     
+                    holder.append(allInfo.copy())
+                    allInfo.clear()   
+                
+        if found:
+            assert len(holder) > 0
+            #print("wee ", holder)
+            datestring = "temp"
+            filename = f"employee{datestring}.csv"
+            newfile = not os.path.exists(filename)
+            if os.path.exists(filename):
+                os.remove(filename)
+            
+            for data in holder:
+                newfile = not os.path.exists(filename)
+                with open(filename, 'a', newline='', encoding='utf-8') as fh:
+                    csvwriter = csv.DictWriter(fh, fieldnames=cat)
+                    if newfile:
+                        csvwriter.writeheader()
+                    csvwriter.writerow(data)  
+                
+            
+                         
     def search_emp_id(self, idx):
         '''Search for the employee by it's ID'''
         for row in self.data:

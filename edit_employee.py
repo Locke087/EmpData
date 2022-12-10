@@ -3,6 +3,7 @@ import os
 import csv
 from addEmployee import LabelData
 from Employee import Employee
+import csvalchemy
 class EditEmployee():
     def __init__(self,master,user, employee: Employee) -> None:
         self.master = master
@@ -44,9 +45,11 @@ class EditEmployee():
         self.make_editable_entry('permission', employee.permission)
         self.make_editable_entry('emergency_contact', employee.emergency_contact)
         self.make_editable_entry('is_deactivated', employee.is_deactivated)
+        self.make_editable_entry('route', employee.route)
+        self.make_editable_entry('account number', employee.acct_no)
         
 
-        rlim = 17
+        rlim = 19
         clim = 4
         r, c = 1, 0
         for key, view in self.views.items():
@@ -57,7 +60,7 @@ class EditEmployee():
                 r = 1
                 c += 1
         self.submit_btn = tk.Button(self.frame, text="💾 Save", command=self.submit, font=('Arial', 25))
-        self.submit_btn.grid(row=15, column=2, rowspan=4, sticky=tk.NSEW)
+        self.submit_btn.grid(row=16, column=2, rowspan=4, sticky=tk.NSEW)
     def submit(self):
         #TODO do form validation
         allInfo = {}
@@ -67,83 +70,26 @@ class EditEmployee():
         dataHolder = [employee.emp_id, employee.fname, employee.lname, employee.department, employee.title, employee.office_email
         ,employee.address.street_address, employee.address.apt_no, employee.address.city, employee.address.state, employee.address.zip_code
         , employee.address.country, employee.office_phone, employee.pay_type, employee.wage, employee.birthday, employee.social_secuitry,  
-        employee.start_date,  employee.end_date, employee.bank_info, employee.permission,employee.emergency_contact , employee.is_deactivated,  "skip" ]
+        employee.start_date,  employee.end_date, employee.bank_info, employee.permission,employee.emergency_contact , employee.is_deactivated,
+        employee.password,employee.route, employee.acct_no ]
         cat = ['EmpID','First','Last','Dept','Title','OfficeEmail','StreetNumber','Apt',
                 'City','State','ZipCode','Country','OfficePhone','PayType','Wage','DateOfBirth',
-                'SocialSecurity','StartDate','EndDate','BankInfo','PermissionLevel','EmergencyContact','Deactivated','Password']
+                'SocialSecurity','StartDate','EndDate','BankInfo','PermissionLevel','EmergencyContact','Deactivated','Password', 'Route',"Account"]
+        row = []
         assert len(self.views) > 0
         for key, value in self.views.items():
             is_label = key[-6:] == '_label'
             found = False
             if not is_label:
-                print(key, value.get())
-                #TODO do the form validation with a dictionary to look up how
-                #TODO should be implemented in the employee class
-                filename = './employee.csv'
-                if os.path.exists('./employeetemp.csv'):
-                    filename = './employeetemp.csv'
-                with open(filename) as file:
-                    reader = csv.reader(file)  
-                    for i,row in enumerate(reader):
-                        if i == 0:
-                            continue
-                        id = employee.emp_id
-                        name = employee.fname
-                       
-                        db_id = row[0]
-                        db_name = row[1]
-                        db_name = db_name.strip()
-                        #print("here")
-                        if name == db_name and id == db_id:
-                            print('Found it ', name, db_name, db_id, id)
-                            found = True
-                           
-                        #move on to the next window
-                            index = 0
-                            #allInfo.clear()
-                            for keys, j in self.views.items():
-                                 is_label = keys[-6:] == '_label'
-                                 if not is_label:
-                                    allInfo[cat[index]] = j.get()
-                                    dataHolder[index] = j.get()
-                                    index += 1
-                                
-                           # print(*allInfo.items())
-                            allInfo['Password'] = employee.row[-1]
-                            holder.append(allInfo.copy())
-                            
-                            allInfo.clear()
-
-                           
-                        else:
-                            index = 0
-                            for j in row:
-                                allInfo[cat[index]] = j
-                                index += 1
-                            #print(*allInfo.items())     
-                            holder.append(allInfo.copy())
-                            allInfo.clear()   
-                        
-                if found:
-                    assert len(holder) > 0
-                    #print("wee ", holder)
-                    datestring = "temp"
-                    filename = f"employee{datestring}.csv"
-                    newfile = not os.path.exists(filename)
-                    if os.path.exists(filename):
-                        os.remove(filename)
-                 
-                    for data in holder:
-                        newfile = not os.path.exists(filename)
-                        with open(filename, 'a', newline='', encoding='utf-8') as fh:
-                            csvwriter = csv.DictWriter(fh, fieldnames=data.keys())
-                            if newfile:
-                                csvwriter.writeheader()
-                            csvwriter.writerow(data)  
-                      
-                 
-                    break                            
-        
+                #TODO validate the entries below
+                row.append(value.get())
+                if key == 'is_deactivated':
+                    row.append(employee.password)
+        prev_data = self.emp
+        self.emp = Employee(row)
+        #TODO Edit the entries in the file
+        print(self.emp.address.country)
+        csvalchemy.singleton.edit_employee(prev_data.emp_id,self.emp)
         self.go_back()
     def make_editable_entry(self, key, value):
         self.views[key + '_label'] = tk.Label(self.frame, text=key)
