@@ -88,6 +88,8 @@ class ViewEmployeeAdmin():
 
         self.go_to_emp = tk.Button(self.frame, text="View employee", command=self.goEmp, font=('Arial', 15))
         self.go_to_emp.grid(row=3, column=1, columnspan=2, pady=10)
+        self.payslip = tk.Button(self.frame, text="Generate Payslip", command=self.generatePayslip, font=('Arial', 15))
+        self.payslip.grid(row=4, column=1, columnspan=2, pady=10)
         
         self.scroll.config(command=self.list_box.yview)
 
@@ -173,7 +175,10 @@ class ViewEmployeeAdmin():
                 self.refresh_listbox()
 
                 
-        
+    def generatePayslip(self):
+        f = self.open_datafiles()
+        if f: 
+            csvalchemy.singleton.process_timecards(f)   
     def goAdd(self):
         self.frame.destroy()
         self.app = AddEmployee(self.master, self.user)
@@ -189,7 +194,8 @@ class ViewEmployeeAdmin():
         if typed == '---DEACTIVATEDEMPLOYEES---':
             #Don't even bother if it's the header infomation
             return
-        for item in self.employees:
+        for row in self.employees:
+            item = Employee(row)
             comb = f"{item.emp_id}{item.fname}{item.lname}"
             is_ok = typed.lower() in item.fname.lower() or typed.lower() in item.lname.lower() \
                     or typed.lower() in comb.lower() or typed.lower() in comb.lower()
@@ -208,6 +214,7 @@ class ViewEmployeeAdmin():
         # show the open file dialog
         f = fd.askopenfile(filetypes=filetypes)
         # read the text file and show its content on the Text
+        return f
         
 
 ####NON_ADMIN####
@@ -338,5 +345,21 @@ class ViewEmployeeEmp():
                 break
         self.frame.destroy()
         self.app = SingleEmployeePub(self.master,self.user, employee)
+
+if __name__ == '__main__':
+    window = tk.Tk()
+    emp_data = None
+    with open('./employee.csv') as file:
+            reader = csv.reader(file)
+            for i,row in enumerate(reader):
+                if i == 0:
+                    continue
+                else:
+                    emp_data = row
+                    break
+    employee = Employee()
+    employee.row_init(emp_data)
+    frame = ViewEmployeeAdmin(window, employee)
+    window.mainloop()
 
             

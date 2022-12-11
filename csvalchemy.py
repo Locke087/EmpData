@@ -21,7 +21,6 @@ class CSVManager():
         for i,row in enumerate(reader):
             if i==0:
                     continue
-            emp = Employee(row)
             data.append(row)
         return data
     def add_employee(self, row):
@@ -119,7 +118,7 @@ class CSVManager():
             if idx == emp.emp_id:
                 return emp
         return None
-
+    
     def process_timecards(self, f):
         '''
         example format below. It's a list of floats of the hours they worked
@@ -137,8 +136,23 @@ class CSVManager():
         934003,5.8,7.5,5.8,4.8,5.9,4.8,4.0,6.6,5.5,7.2 
         """
 '''
-        rows = self.read_csv_rows(f)
-        print(rows)
+        rows =[]
+        rows = self.read_csv_rows(rows, f)
+        totals = []
+        emps = []
+        for row in rows:
+            
+            emp = self.search_emp_id(row[0])
+            if not emp:
+                raise Exception(f'Employee in timecard does not exist. Attempted ID: {row[0]} but it does not exist. Make sure you have an id of an employee who exists')
+            if not emp.pay_type == 'Hourly':
+                raise Exception(f'Employee with ID:{emp.emp_id} is not hourly. It is currently {emp.pay_type}. Either change the employee ID or fix the ID to the correct employee.')
+            hours = sum([float(x) for x in row[1:]])
+            pay_total = float(emp.wage) * hours
+            print(pay_total)
+            emps.append(emp)
+            totals.append(pay_total)
+        return (emps, totals)
     def proccess_receipts(self, f):
         '''
         Example format for commissioned employees:
@@ -149,6 +163,19 @@ class CSVManager():
         160769,63.02,163.42,140.06,84.15
         """
         '''
-        rows = self.read_csv_rows(f)
+        rows =[]
+        rows = self.read_csv_rows(rows, f)
+        totals = []
+        emps = []
+        for row in rows:       
+            emp = self.search_emp_id(row[0])
+            if not emp:
+                raise Exception(f'Employee in timecard does not exist. Attempted ID: {row[0]} but it does not exist. Make sure you have an id of an employee who exists')
+            if not emp.pay_type == 'Commission':
+                raise Exception(f'Employee with ID:{emp.emp_id} is not commission. It is currently {emp.pay_type}. Either change the employee ID or fix the ID to the correct employee.')
+            pay_total = sum([float(x) for x in row[1:]])
+            print(pay_total)
+            emps.append(emp)
+            totals.append(pay_total)
 
 singleton = CSVManager()
