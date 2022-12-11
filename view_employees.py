@@ -279,19 +279,7 @@ class ViewEmployeeEmp():
         # In center of screen, create welcome message, username and password input boxes with username and password headings
         self.user: Employee = employee_data
    
-        self.employees: list[Employee] = []
-        filename = './employee.csv'
-        if os.path.exists('./employeetemp.csv'):
-            filename = './employeetemp.csv'
-        with open(filename) as file:
-            reader = csv.reader(file)
-            for i, row in enumerate(reader):
-                if i == 0:
-                    continue
-                emp = Employee()
-                emp.row_init(row)
-                if emp.permission.lower() != 'admin':
-                    self.employees.append(emp)
+        self.employees: list[Employee] = [Employee(row) for row in csvalchemy.singleton.get_rows()]
         
         self.usertitle = tk.Label(self.frame, text=f'Hello, {self.user.fname} {self.user.lname}', font=('Arial', 35), anchor=tk.W)
         self.usertitle.grid(row=0, column=0, padx=40)
