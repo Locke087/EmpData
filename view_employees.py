@@ -88,9 +88,16 @@ class ViewEmployeeAdmin():
 
         self.go_to_emp = tk.Button(self.frame, text="View employee", command=self.goEmp, font=('Arial', 15))
         self.go_to_emp.grid(row=3, column=1, columnspan=2, pady=10)
-        self.payslip = tk.Button(self.frame, text="Generate Payslip", command=self.generatePayslip, font=('Arial', 15))
-        self.payslip.grid(row=4, column=1, columnspan=2, pady=10)
         
+        
+        self.options = ['','All Employees','Only Active Employees', 'Only Deactivated Employees', 'Payslip', 'Payslip with Active Only', 'Payslip with Deactivated Only']
+        self.clicked = StringVar()
+        self.clicked.set('All Employees')
+        self.optionMenu = OptionMenu(self.frame, self.clicked, *self.options)
+        self.optionMenu.grid(row=4, column=1, columnspan=2, pady=10)
+
+        self.payslip = tk.Button(self.frame, text="Generate Report", command=self.generateDatabase, font=('Arial', 15))
+        self.payslip.grid(row=5, column=1, columnspan=2, pady=10)
         self.scroll.config(command=self.list_box.yview)
 
         #Binding for events such as when the listbox element is selected and when we type in the search box
@@ -143,7 +150,8 @@ class ViewEmployeeAdmin():
         if typed == '---DEACTIVATEDEMPLOYEES---':
             #Don't even bother if it's the header infomation
             return
-        for item in self.employees:
+        for row in self.employees:
+            item = Employee(row)
             comb = f"{item.emp_id}{item.fname}{item.lname}"
             is_ok = typed.lower() in item.fname.lower() or typed.lower() in item.lname.lower() \
                     or typed.lower() in comb.lower() or typed.lower() in comb.lower()
@@ -174,14 +182,33 @@ class ViewEmployeeAdmin():
                 csvalchemy.singleton.archive_employee(employee)
                 self.refresh_listbox()
 
-                
-    def generatePayslip(self):
+    def generateDatabase(self):
+        selected_option = self.clicked.get()
+        if selected_option == self.options[1]:
+            pass #copy the entire database into another file
+        elif selected_option == self.options[2]:
+            pass #copy all the employees that are active
+        elif selected_option == self.options[3]:
+            pass #copy all the employees that are not active
+        elif selected_option == self.options[4]:
+            self.generatePayslip()
+        elif selected_option == self.options[5]:
+            self.generatePayslip(isDeactive=False)
+        elif selected_option == self.options[6]:
+            self.generatePayslip(isActive=False)
+    def generateEmployeeInfo(self):
+        pass
+    def generatePayslip(self, isActive=True, isDeactive=True):
         with open('payroll.txt', 'a') as file:
             messagebox.showinfo('Timecards', 'Please select a csv file for the timecards to be processed')
             f = self.open_datafiles()
             if f: 
                 emps, totals = csvalchemy.singleton.process_timecards(f)
                 for emp, total in zip(emps, totals):
+                    if not isActive and emp.is_deactivated == 'n':
+                        continue
+                    if not isDeactive and emp.is_deactivated == 'y':
+                        continue
                     if emp.bank_info == 'mm':
                         address = str(emp.address).replace('\n','')
                         file.write(f'Mailing {total} to {emp.fname} {emp.lname} at {address}\n')
