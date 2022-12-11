@@ -9,15 +9,20 @@ class CSVManager():
         if "employeetemp" in os.listdir('.'):
             self.path = './employeetemp.csv'
         self.data = self.get_rows()
-    def get_rows(self):
+    def get_rows(self,path=None):
+        if not path:
+            path = self.path
         data = []
-        with open(self.path, 'r') as f:
-            reader = csv.reader(f)
-            for i,row in enumerate(reader):
-                if i==0:
+        with open(path, 'r') as f:
+            data = self.read_csv_rows(data, f)
+        return data
+    def read_csv_rows(self, data, f):
+        reader = csv.reader(f)
+        for i,row in enumerate(reader):
+            if i==0:
                     continue
-                emp = Employee(row)
-                data.append(row)
+            emp = Employee(row)
+            data.append(row)
         return data
     def add_employee(self, row):
         with open('./employeetemp.csv', 'a', newline='', encoding='utf-8') as file:
@@ -25,6 +30,11 @@ class CSVManager():
             writer.writerow(row)
         
     def archive_employee(self, emp: Employee):
+        if emp.is_deactivated == 'n':
+            emp.is_deactivated = 'y'
+        else:
+            emp.is_deactivated = 'n'
+        emp.sync_row()
         self.edit_employee(emp.emp_id, emp)
     def edit_employee(self,prev_id: int, employee: Employee):
         allInfo = {}
@@ -110,7 +120,7 @@ class CSVManager():
                 return emp
         return None
 
-    def process_timecards(self):
+    def process_timecards(self, f):
         '''
         example format below. It's a list of floats of the hours they worked
         688997,5.0,6.8,8.0,7.7,6.6,5.2,7.1,4.0,7.5,7.6 
@@ -127,8 +137,9 @@ class CSVManager():
         934003,5.8,7.5,5.8,4.8,5.9,4.8,4.0,6.6,5.5,7.2 
         """
 '''
-        pass
-    def proccess_receipts(self):
+        rows = self.read_csv_rows(f)
+        print(rows)
+    def proccess_receipts(self, f):
         '''
         Example format for commissioned employees:
 
@@ -138,5 +149,6 @@ class CSVManager():
         160769,63.02,163.42,140.06,84.15
         """
         '''
+        rows = self.read_csv_rows(f)
 
 singleton = CSVManager()

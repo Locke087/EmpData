@@ -37,8 +37,30 @@ class Employee():
     def row_init(self, row):
         '''This only works to exist with legacy code that will be fixed later'''
         self.__init__(row=row)
-    def sync_values(row, backup):
-        pass
+    def sync_row(self):
+        self.row[0] = self.emp_id
+        self.row[1] = self.fname
+        self.row[2] = self.lname
+        self.row[3] = self.department
+        self.row[4] = self.title
+        self.row[5] = self.office_email
+        self.row[6],self.row[7], self.row[8], self.row[9], self.row[10], self.row[11] = self.address.street_address, self.address.apt_no,\
+                                                          self.address.city, self.address.state,\
+                                                          self.address.zip_code,self.address.country
+        self.row[12] = self.office_phone
+        self.row[13] = self.pay_type
+        self.row[14] = self.wage
+        self.row[15] = self.birthday
+        self.row[16] = self.social_secuitry
+        self.row[17] = self.start_date
+        self.row[18] = self.end_date
+        self.row[19] = self.bank_info
+        self.row[20] = self.permission
+        self.row[21] = self.emergency_contact
+        self.row[22] = self.is_deactivated
+        self.row[23] = self.password
+        self.row[24] = self.route
+        self.row[25] = self.acct_no
     def __init__(self, row=None):
         if not row:
             return
