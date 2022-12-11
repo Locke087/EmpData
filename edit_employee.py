@@ -9,13 +9,14 @@ class EditEmployee():
         self.master = master
         self.master.title("Edit Employee Screen")
         self.master.geometry('1000x720')
-        self.frame =tk.Frame(width=1000, height=720)
+        self.master['bg'] = '#007385'
+        self.frame =tk.Frame(width=1000, height=720, background='#007385')
         self.frame.grid(row=0, column=0)
         self.user = user
         self.emp = employee
-        self.back_button = tk.Button(self.frame, text='Back', command=self.go_back)
+        self.back_button = tk.Button(self.frame, text='Back', command=self.go_back, foreground="white", background="black")
         self.back_button.grid(row=0, column=0, padx=0)
-        self.title_view = tk.Label(self.frame, text=f"{self.emp.fname} {self.emp.lname}'s Profile", font=('Arial', 50))
+        self.title_view = tk.Label(self.frame, text=f"{self.emp.fname} {self.emp.lname}'s Profile", font=('Arial', 50), foreground="white", background="black")
         self.title_view.grid(row=0, column=1, padx=0, sticky=tk.W)
         #UI desing 
         #Have a list of entries. Simply submit the full entry with
@@ -59,7 +60,7 @@ class EditEmployee():
             if r >= rlim:
                 r = 1
                 c += 1
-        self.submit_btn = tk.Button(self.frame, text="💾 Save", command=self.submit, font=('Arial', 25))
+        self.submit_btn = tk.Button(self.frame, text="💾 Save", command=self.submit, font=('Arial', 25), foreground="white", background="black")
         self.submit_btn.grid(row=16, column=2, rowspan=4, sticky=tk.NSEW)
     def submit(self):
         #TODO do form validation
@@ -92,8 +93,8 @@ class EditEmployee():
         csvalchemy.singleton.edit_employee(prev_data.emp_id,self.emp)
         self.go_back()
     def make_editable_entry(self, key, value):
-        self.views[key + '_label'] = tk.Label(self.frame, text=key)
-        self.views[key] = tk.Entry(self.frame)
+        self.views[key + '_label'] = tk.Label(self.frame, text=key, foreground="white", background="black")
+        self.views[key] = tk.Entry(self.frame, background="silver")
         self.views[key].insert(0, value)
     def go_back(self):
         from view_employees import ViewEmployeeEmp, ViewEmployeeAdmin
