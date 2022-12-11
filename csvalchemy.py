@@ -16,10 +16,10 @@ class CSVManager():
         with open(path, 'r') as f:
             data = self.read_csv_rows(data, f)
         return data
-    def read_csv_rows(self, data, f):
+    def read_csv_rows(self, data, f, isSkipFirstRow=True):
         reader = csv.reader(f)
         for i,row in enumerate(reader):
-            if i==0:
+            if i==0 and isSkipFirstRow:
                     continue
             data.append(row)
         return data
@@ -137,7 +137,7 @@ class CSVManager():
         """
 '''
         rows =[]
-        rows = self.read_csv_rows(rows, f)
+        rows = self.read_csv_rows(rows, f, isSkipFirstRow=False)
         totals = []
         emps = []
         for row in rows:
@@ -162,13 +162,23 @@ class CSVManager():
         265154,240.20,83.69,52.31,77.29,142.12 
         160769,63.02,163.42,140.06,84.15
         """
+
+        14,Sean,Green, Green Pixies,Magic Teacher, john.doe@gmail.com, 123 abc street,, Spanish Fork, Utah, 14323,USA, 801-123-1234,Commission,0,1/1/2000,123-123-123, 1/1/2022,12/1/2022,mm,admin,Bazinga : 123-123-1234,n,d04b98f48e8f8bcc15c6ae5ac050801cd6dcfd428fb5f9e65c4e16e7807340fa,36644938-8,244269-0000
+15,Sean,Smith, Green Pixies,Magic Teacher, john.doe@gmail.com, 123 abc street,, Spanish Fork, Utah, 14323,USA, 801-123-1234,Commission,0,1/1/2000,123-123-123, 1/1/2022,12/1/2022,dm,admin,Bazinga : 123-123-1234,n,d04b98f48e8f8bcc15c6ae5ac050801cd6dcfd428fb5f9e65c4e16e7807340fa,15300058-1,828625-2906
+16,Sean,Scholz, Green Pixies,Magic Teacher, john.doe@gmail.com, 123 abc street,, Spanish Fork, Utah, 14323,USA, 801-123-1234,Commission,0,1/1/2000,123-123-123, 1/1/2022,12/1/2022,mm,admin,Bazinga : 123-123-1234,n,d04b98f48e8f8bcc15c6ae5ac050801cd6dcfd428fb5f9e65c4e16e7807340fa,44553589-3,785957-2104
+17,Sean,Evil, Green Pixies,Magic Teacher, john.doe@gmail.com, 123 abc street,, Spanish Fork, Utah, 14323,USA, 801-123-1234,Commission,0,1/1/2000,123-123-123, 1/1/2022,12/1/2022,dm,admin,Bazinga : 123-123-1234,n,d04b98f48e8f8bcc15c6ae5ac050801cd6dcfd428fb5f9e65c4e16e7807340fa,21038669-6,654904-8491
+18,Sean,Chao, Green Pixies,Magic Teacher, john.doe@gmail.com, 123 abc street,, Spanish Fork, Utah, 14323,USA, 801-123-1234,Commission,0,1/1/2000,123-123-123, 1/1/2022,12/1/2022,mm,admin,Bazinga : 123-123-1234,n,d04b98f48e8f8bcc15c6ae5ac050801cd6dcfd428fb5f9e65c4e16e7807340fa,30417353-A,465794-1234
+19,Sean,Chin, Green Pixies,Magic Teacher, john.doe@gmail.com, 123 abc street,, Spanish Fork, Utah, 14323,USA, 801-123-1234,Commission,0,1/1/2000,123-123-123, 1/1/2022,12/1/2022,dm,admin,Bazinga : 123-123-1234,n,d04b98f48e8f8bcc15c6ae5ac050801cd6dcfd428fb5f9e65c4e16e7807340fa,30417353-B,567794-5678
+20,Sean,Morris, Green Pixies,Magic Teacher, john.doe@gmail.com, 123 abc street,, Spanish Fork, Utah, 14323,USA, 801-123-1234,Commission,0,1/1/2000,123-123-123, 1/1/2022,12/1/2022,mm,admin,Bazinga : 123-123-1234,n,d04b98f48e8f8bcc15c6ae5ac050801cd6dcfd428fb5f9e65c4e16e7807340fa,30417353-C,465794-9012
+23,Sean,Muir, Green Pixies,Magic Teacher, john.doe@gmail.com, 123 abc street,, Spanish Fork, Utah, 14323,USA, 801-123-1234,Commission,
         '''
         rows =[]
-        rows = self.read_csv_rows(rows, f)
+        rows = self.read_csv_rows(rows, f, isSkipFirstRow=False)
         totals = []
         emps = []
         for row in rows:       
             emp = self.search_emp_id(row[0])
+            #TODO turn exceptions into error boxes
             if not emp:
                 raise Exception(f'Employee in timecard does not exist. Attempted ID: {row[0]} but it does not exist. Make sure you have an id of an employee who exists')
             if not emp.pay_type == 'Commission':
@@ -177,5 +187,5 @@ class CSVManager():
             print(pay_total)
             emps.append(emp)
             totals.append(pay_total)
-
+        return (emps, totals)
 singleton = CSVManager()

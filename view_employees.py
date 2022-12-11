@@ -176,9 +176,16 @@ class ViewEmployeeAdmin():
 
                 
     def generatePayslip(self):
+        messagebox.showinfo('Timecards', 'Please select a csv file for the timecards to be processed')
         f = self.open_datafiles()
         if f: 
-            csvalchemy.singleton.process_timecards(f)   
+            v = csvalchemy.singleton.process_timecards(f)   
+            print()
+        messagebox.showinfo('Receipts', 'Please select a csv file for the receipts to be processed')
+        f = self.open_datafiles()
+        if f:
+            v = csvalchemy.singleton.proccess_receipts(f)
+            print()
     def goAdd(self):
         self.frame.destroy()
         self.app = AddEmployee(self.master, self.user)
