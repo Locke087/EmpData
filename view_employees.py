@@ -15,20 +15,24 @@ class ViewEmployeeAdmin():
         self.master = master
         self.master.title("View Employee Screen")
         self.master.geometry('1200x900')
-        self.master['bg'] ='white'
+        self.master['bg'] = '#007385'
         style = Style()
+
         style.configure('W.TLabel', font =
                ('Arial', 50, 'bold', 'underline'),
-                foreground = 'black', background = 'white')
+                foreground = 'black', background = '#007385')
         style.configure('W.TButton', font =
                ('Arial', 25, 'bold', 'underline'),
                 foreground = 'black', background = 'black')
+ 
+        
+       
 
 
         #TODO actually document this document
         #TODO Make the thing read once only or use asyncrounous programming
         #TODO (cont) to make the page load more seemless
-        self.frame =tk.Frame(width=1000, height=720)
+        self.frame =tk.Frame(width=1000, height=720, background='#007385')
         self.frame.grid(row=0, column=0)
         # In center of screen, create welcome message, username and password input boxes with username and password headings
         self.user: Employee = employee_data
@@ -46,33 +50,33 @@ class ViewEmployeeAdmin():
                 emp.row_init(row)
                 self.employees.append(emp)
         
-        self.usertitle = tk.Label(self.frame, text=f'Hello, {self.user.fname} {self.user.lname}', font=('Arial', 35), anchor=tk.W)
+        self.usertitle = tk.Label(self.frame, text=f'Hello, {self.user.fname} {self.user.lname}', font=('Arial', 35), anchor=tk.W, foreground="white", background='black')
         self.usertitle.grid(row=0, column=0, padx=40)
-        self.perm = tk.Label(self.frame, text=f'Permission:{self.user.permission.upper()}', font=('Arial', 25), anchor=tk.E)
+        self.perm = tk.Label(self.frame, text=f'Permission:{self.user.permission.upper()}', font=('Arial', 25), anchor=tk.E, foreground="white", background='black')
         self.perm.grid(row=1,column=0,pady=10, padx=40)
 
-        self.edit_emp_btn = tk.Button(self.frame, text="Edit Employee", command=self.goEdit, font=('Arial', 15))
+        self.edit_emp_btn = tk.Button(self.frame, text="Edit Employee", command=self.goEdit, font=('Arial', 15), background="black", foreground="white")
         self.edit_emp_btn.grid(row=3, column=0,pady=10)
-        self.edit_emp_btn = tk.Button(self.frame, text="Add Employee", command=self.goAdd, font=('Arial', 15))
+        self.edit_emp_btn = tk.Button(self.frame, text="Add Employee", command=self.goAdd, font=('Arial', 15), background="black", foreground="white")
         self.edit_emp_btn.grid(row=4, column=0, pady=10)
-        self.edit_emp_btn = tk.Button(self.frame, text="Remove Employee", command=self.goRemove, font=('Arial', 15))
+        self.edit_emp_btn = tk.Button(self.frame, text="Remove Employee", command=self.goRemove, font=('Arial', 15), background="black", foreground="white")
         self.edit_emp_btn.grid(row=5, column=0, pady=10)
   
-        self.emp_title = tk.Label(self.frame, text="Employee list", font=('Arial', 50))
+        self.emp_title = tk.Label(self.frame, text="Employee list", font=('Arial', 50), background="black", foreground="white")
         self.emp_title.grid(row=0, column=1, columnspan=3)
 
 
-        self.emp_title = tk.Label(self.frame, text="🔍", font=('Arial', 25))
+        self.emp_title = tk.Label(self.frame, text="🔍", font=('Arial', 25), pady="10", background="silver")
         self.emp_title.grid(row=1, column=1, padx=0)
         self.search_var = tk.StringVar()#search value to be stored in here
-        self.search_entry = tk.Entry(self.frame, textvariable=self.search_var, width=30, font=('Arial', 25))
+        self.search_entry = tk.Entry(self.frame, textvariable=self.search_var, width=30, font=('Arial', 25), background="silver")
         self.search_entry.grid(row=1, column=2, padx=0, sticky=tk.NSEW)
     
         
         self.scroll = tk.Scrollbar(self.frame)
         self.scroll.grid(row=2, column=3, sticky=tk.NS)
 
-        self.list_box = tk.Listbox(self.frame, height=15,yscrollcommand=self.scroll.set, font=('Arial', 25))
+        self.list_box = tk.Listbox(self.frame, height=15,yscrollcommand=self.scroll.set, font=('Arial', 25), background="silver")
         self.deacts = []
         for employee in self.employees:
             if employee.is_deactivated == 'n':
@@ -87,7 +91,7 @@ class ViewEmployeeAdmin():
 
         
 
-        self.go_to_emp = tk.Button(self.frame, text="View employee", command=self.goEmp, font=('Arial', 15))
+        self.go_to_emp = tk.Button(self.frame, text="View employee", command=self.goEmp, font=('Arial', 15), background="black", foreground="white")
         self.go_to_emp.grid(row=3, column=1, columnspan=2, pady=10)
         
         self.scroll.config(command=self.list_box.yview)
