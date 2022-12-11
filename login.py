@@ -15,7 +15,7 @@ class LoginScreen():
         style = Style()
         style.configure('W.TLabel', font =
                ('Arial', 50, 'bold', 'underline'),
-                foreground = 'black', background = 'white')
+                foreground = 'black', background = '#007385')
         style.configure('W.TButton', font =
                ('Arial', 25, 'bold', 'underline'),
                 foreground = 'black', background = 'black')
@@ -23,8 +23,8 @@ class LoginScreen():
         self.master = master
         self.master.title("Login Screen")
         self.master.geometry('1000x720')
-        self.master['bg'] ='white'
-        self.frame = tk.Frame(self.master, width=1000, height=720, background="white")
+        self.master['bg'] = '#007385'
+        self.frame = tk.Frame(self.master, width=1000, height=720, background='#007385')
         # In center of screen, create welcome message, username and password input boxes with username and password headings
         self.welcome_message = Label(self.frame, text="Welcome", style='W.TLabel')
 
@@ -33,9 +33,9 @@ class LoginScreen():
 
         self.id = tk.Entry(self.frame, font=('Arial', 25), background='silver')
 
-        self.id_line = tk.Label(self.frame, text="", font=('Arial', 25), background='white' )
-        self.id_line2 = tk.Label(self.frame, text="", font=('Arial', 25), background='white' )
-        self.id_line3 = tk.Label(self.frame, text="", font=('Arial', 25), background='white' )
+        self.id_line = tk.Label(self.frame, text="", font=('Arial', 25), background='#007385' )
+        self.id_line2 = tk.Label(self.frame, text="", font=('Arial', 25), background='#007385' )
+        self.id_line3 = tk.Label(self.frame, text="", font=('Arial', 25), background='#007385' )
 
 
         self.pass_message = tk.Label(self.frame, text="Password", font=('Arial', 25), background='black', foreground="white")

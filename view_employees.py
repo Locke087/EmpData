@@ -15,14 +15,14 @@ class ViewEmployeeAdmin():
         self.master = master
         self.master.title("View Employee Screen")
         self.master.geometry('1200x900')
-        self.master['bg'] ='cyan'
+        self.master['bg'] ='white'
         style = Style()
         style.configure('W.TLabel', font =
                ('Arial', 50, 'bold', 'underline'),
-                foreground = 'red', background = 'blue')
+                foreground = 'black', background = 'white')
         style.configure('W.TButton', font =
                ('Arial', 25, 'bold', 'underline'),
-                foreground = 'orange', background = 'black')
+                foreground = 'black', background = 'black')
 
 
         #TODO actually document this document
