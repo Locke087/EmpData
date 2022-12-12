@@ -6,8 +6,13 @@ class CSVManager():
     def __init__(self) -> None:
         self.data = []
         self.path = "./employee.csv"
-        if "employeetemp" in os.listdir('.'):
+
+        if "employeetemp.csv" in os.listdir('.'):
             self.path = './employeetemp.csv'
+
+        self.headers = ['EmpID','First','Last','Dept','Title','OfficeEmail','StreetNumber','Apt',
+                'City','State','ZipCode','Country','OfficePhone','PayType','Wage','DateOfBirth',
+                'SocialSecurity','StartDate','EndDate','BankInfo','PermissionLevel','EmergencyContact','Deactivated','Password','Route', 'Account']
         self.data = self.get_rows()
     def get_rows(self,path=None):
         if not path:
@@ -39,13 +44,8 @@ class CSVManager():
         allInfo = {}
         data = {}
         holder = []
-       
-        cat = ['EmpID','First','Last','Dept','Title','OfficeEmail','StreetNumber','Apt',
-                'City','State','ZipCode','Country','OfficePhone','PayType','Wage','DateOfBirth',
-                'SocialSecurity','StartDate','EndDate','BankInfo','PermissionLevel','EmergencyContact','Deactivated','Password','Route', 'Account']
-        filename = './employee.csv'
  
-        with open(filename) as file:
+        with open(self.path) as file:
             reader = csv.reader(file)
             for i,row in enumerate(reader):
                 if i == 0:
@@ -69,7 +69,7 @@ class CSVManager():
                     index = 0
                     #allInfo.clear()
                     for j in employee.row:
-                            allInfo[cat[index]] = j
+                            allInfo[self.headers[index]] = j
                             index += 1
                             
                         
@@ -83,7 +83,7 @@ class CSVManager():
                 else:
                     index = 0
                     for j in row:
-                        allInfo[cat[index]] = j
+                        allInfo[self.headers[index]] = j
                         index += 1
                     #print(*allInfo.items())     
                     holder.append(allInfo.copy())
@@ -101,7 +101,7 @@ class CSVManager():
             for data in holder:
                 newfile = not os.path.exists(filename)
                 with open(filename, 'a', newline='', encoding='utf-8') as fh:
-                    csvwriter = csv.DictWriter(fh, fieldnames=cat)
+                    csvwriter = csv.DictWriter(fh, fieldnames=self.headers)
                     if newfile:
                         csvwriter.writeheader()
                     csvwriter.writerow(data)  
@@ -188,4 +188,16 @@ class CSVManager():
             emps.append(emp)
             totals.append(pay_total)
         return (emps, totals)
+    def info_report(self, f, isActive=True, isDeactive=True):
+        writer = csv.writer(f)
+        writer.writerow(self.headers)
+        for row in self.data:
+            emp: Employee = Employee(row)
+            if emp.is_deactivated == 'n' and isActive:
+                writer.writerow(row)
+            if emp.is_deactivated == 'y' and isDeactive:
+                writer.writerow(row)
+            
+
+
 singleton = CSVManager()

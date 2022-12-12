@@ -11,6 +11,7 @@ from add_employee import AddEmployee
 import tkinter.messagebox as messagebox
 import os
 import csvalchemy
+import shutil
 #TODO clean up all the code for matinence.
 class ViewEmployeeAdmin():
     def __init__(self,master, employee_data) -> None:
@@ -180,12 +181,20 @@ class ViewEmployeeAdmin():
 
     def generateDatabase(self):
         selected_option = self.clicked.get()
+        files = [('Comma seperated values', '*.csv'),
+                     ('All Files', '*.*')]
         if selected_option == self.options[1]:
-            pass #copy the entire database into another file
+            file = fd.asksaveasfile(filetypes=files, defaultextension=files)
+            csvalchemy.singleton.info_report(file)
+            file.close()
         elif selected_option == self.options[2]:
-            pass #copy all the employees that are active
+            file = fd.asksaveasfile(filetypes=files, defaultextension=files)
+            csvalchemy.singleton.info_report(file, isDeactive=False)
+            file.close()
         elif selected_option == self.options[3]:
-            pass #copy all the employees that are not active
+            file = fd.asksaveasfile(filetypes=files, defaultextension=files)
+            csvalchemy.singleton.info_report(file, isActive=False)
+            file.close()
         elif selected_option == self.options[4]:
             self.generatePayslip()
         elif selected_option == self.options[5]:
