@@ -31,6 +31,7 @@ class ViewEmployeeAdmin():
         self.user: Employee = employee_data
    
         self.employees: list[Employee] = []
+        self.employeesAlt: list[Employee] = [Employee(row) for row in csvalchemy.singleton.get_rows()]
         filename = './employee.csv'
         if os.path.exists('./employeetemp.csv'):
             filename = './employeetemp.csv'
@@ -56,6 +57,16 @@ class ViewEmployeeAdmin():
 
         self.emp_title = tk.Label(self.frame, text="🔍", font=('Arial', 25), background="silver", pady=10)
         self.emp_title.grid(row=1, column=1, padx=0)
+
+        #self.scroll = tk.Scrollbar(self.frame)
+        #self.scroll.grid(row=2, column=3, sticky=tk.NS)
+
+        #self.list_box = tk.Listbox(self.frame, height=15,yscrollcommand=self.scroll.set, font=('Arial', 25), background='silver')
+        
+        #for employee in self.employees:
+            #self.list_box.insert(tk.END, f"{employee.fname} {employee.lname}")
+        #self.list_box.grid(row=2, column=1, columnspan=2, sticky=(tk.W + tk.E))
+        #self.list_box.activate(0)
         self.search_var = tk.StringVar()#search value to be stored in here
         self.search_entry = tk.Entry(self.frame, textvariable=self.search_var, width=30, font=('Arial', 25), background="silver")
         self.search_entry.grid(row=1, column=2, padx=0, sticky=tk.NSEW)
@@ -83,19 +94,20 @@ class ViewEmployeeAdmin():
 
         self.go_to_emp = tk.Button(self.frame, text="View employee", command=self.goEmp, font=('Arial', 15), background='silver')
         self.go_to_emp.grid(row=3, column=1, columnspan=2, pady=10)
+
         
+        self.payslip = tk.Button(self.frame, text="Generate Report", command=self.generateDatabase, font=('Arial', 15), background='silver')
+        self.payslip.grid(row=4, column=1, columnspan=2, pady=10)
+        self.scroll.config(command=self.list_box.yview)
         
         self.options = ['','All Employees','Only Active Employees', 'Only Deactivated Employees', 'Payslip', 'Payslip with Active Only', 'Payslip with Deactivated Only']
         self.clicked = StringVar()
         self.clicked.set('All Employees')
         self.optionMenu = OptionMenu(self.frame, self.clicked, *self.options)
         self.optionMenu["menu"].config(background="silver")
-        self.optionMenu.grid(row=4, column=1, columnspan=2, pady=10)
+        self.optionMenu.grid(row=5, column=1, columnspan=2, pady=10)
        
 
-        self.payslip = tk.Button(self.frame, text="Generate Report", command=self.generateDatabase, font=('Arial', 15), background='silver')
-        self.payslip.grid(row=5, column=1, columnspan=2, pady=10)
-        self.scroll.config(command=self.list_box.yview)
 
         #Binding for events such as when the listbox element is selected and when we type in the search box
         self.list_box.bind('<<ListboxSelect>>', self.fillout)
@@ -111,12 +123,12 @@ class ViewEmployeeAdmin():
         if typed == '' or typed == '---DEACTIVATEDEMPLOYEES---':
             #Don't even bother if it's the header infomation
             #If there nothing but spaces or empty box, then just put everything back
-            data = self.employees
+            data = self.employeesAlt
         else:
             #TODO Chagne this into a search funciton in the CSV writer class
             #Otherwise do a simple search
             data = []
-            for item in self.employees:
+            for item in self.employeesAlt:
                 comb = f"{item.emp_id}{item.fname}{item.lname}"
                 is_ok = typed.lower() in item.fname.lower() or typed.lower() in item.lname.lower() \
                         or typed.lower() in comb.lower() or typed.lower() in comb.lower()
