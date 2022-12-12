@@ -10,16 +10,16 @@ class AddEmployee():
         self.master = master
         self.master.title("Add Employee Screen")
         self.master.resizable(width=False, height=False)
-        self.master.geometry('1000x720')
+        self.master.geometry('1200x900')
         self.master['bg'] = '#007385'
         self.frame =tk.Frame(width=1000, height=720, background='#007385')
         self.frame.grid(row=0, column=0)
         self.user = employee
-        self.back_button = tk.Button(self.frame, text='Back', command=self.go_back, foreground="white", background="black")
+        self.back_button = tk.Button(self.frame, text='Back', command=self.go_back, background='silver')
         self.back_button.grid(row=0, column=0, padx=0)
-        self.title_view = tk.Label(self.frame, text=f"Add Employee", font=('Arial', 50), foreground="white", background="black")
+        self.title_view = tk.Label(self.frame, text=f"Add Employee", font=('Arial', 50), background='silver')
         self.title_view.grid(row=0, column=1, padx=0, sticky=tk.W+tk.E)
-        self.title_view = tk.Label(self.frame, text=f"""Please fill out all the fields below.""", font=('Arial', 15), foreground="white", background="black")
+        self.title_view = tk.Label(self.frame, text=f"""Please fill out all the fields below.""", font=('Arial', 15), background='silver')
         self.title_view.grid(row=1, column=1, padx=0, sticky=tk.W+tk.E, pady=10)
         #UI desing 
         #Have a list of entries. Simply submit the full entry with
@@ -65,7 +65,7 @@ class AddEmployee():
             if r >= rlim:
                 r = 2
                 c += 1
-        self.submit_btn = tk.Button(self.frame, text="💾Save", command=self.submit, font=('Arial', 25), foreground="white", background="black")
+        self.submit_btn = tk.Button(self.frame, text="💾Save", command=self.submit, font=('Arial', 25), background='silver')
         self.submit_btn.grid(row=18, column=2, rowspan=4, sticky=tk.NSEW)
     def submit(self):
         #TODO do form validation
@@ -97,7 +97,7 @@ class AddEmployee():
         csvalchemy.singleton.add_employee(row)
         self.go_back()
     def make_editable_entry(self, key, value=None):
-        self.views[key + '_label'] = tk.Label(self.frame, text=key, foreground="white", background="black")
+        self.views[key + '_label'] = tk.Label(self.frame, text=key, background='silver')
         self.views[key] = tk.Entry(self.frame, background="silver")
     def go_back(self):
         from view_employees import ViewEmployeeAdmin

@@ -37,19 +37,19 @@ class ViewEmployeeAdmin():
         self.employees = csvalchemy.singleton.get_rows()
         
         
-        self.usertitle = tk.Label(self.frame, text=f'Hello, {self.user.fname} {self.user.lname}', font=('Arial', 35), anchor=tk.W, foreground="white", background="black")
+        self.usertitle = tk.Label(self.frame, text=f'Hello, {self.user.fname} {self.user.lname}', font=('Arial', 35), anchor=tk.W, background='silver')
         self.usertitle.grid(row=0, column=0, padx=40)
-        self.perm = tk.Label(self.frame, text=f'Permission:{self.user.permission.upper()}', font=('Arial', 25), anchor=tk.E, foreground="white", background="black")
+        self.perm = tk.Label(self.frame, text=f'Permission:{self.user.permission.upper()}', font=('Arial', 25), anchor=tk.E, background='silver')
         self.perm.grid(row=1,column=0,pady=10, padx=40)
 
-        self.edit_emp_btn = tk.Button(self.frame, text="Edit Employee", command=self.goEdit, font=('Arial', 15), foreground="white", background="black")
+        self.edit_emp_btn = tk.Button(self.frame, text="Edit Employee", command=self.goEdit, font=('Arial', 15), background='silver')
         self.edit_emp_btn.grid(row=3, column=0,pady=10)
-        self.edit_emp_btn = tk.Button(self.frame, text="Add Employee", command=self.goAdd, font=('Arial', 15), foreground="white", background="black")
+        self.edit_emp_btn = tk.Button(self.frame, text="Add Employee", command=self.goAdd, font=('Arial', 15), background='silver')
         self.edit_emp_btn.grid(row=4, column=0, pady=10)
-        self.edit_emp_btn = tk.Button(self.frame, text="Deactivate/Activate Employee", command=self.goArchive, font=('Arial', 15), foreground="white", background="black")
+        self.edit_emp_btn = tk.Button(self.frame, text="Deactivate/Activate Employee", command=self.goArchive, font=('Arial', 15), background='silver')
         self.edit_emp_btn.grid(row=5, column=0, pady=10)
   
-        self.emp_title = tk.Label(self.frame, text="Employee list", font=('Arial', 50), foreground="white", background="black")
+        self.emp_title = tk.Label(self.frame, text="Employee list", font=('Arial', 50), background='silver')
         self.emp_title.grid(row=0, column=1, columnspan=3)
 
 
@@ -80,7 +80,7 @@ class ViewEmployeeAdmin():
     
         
 
-        self.go_to_emp = tk.Button(self.frame, text="View employee", command=self.goEmp, font=('Arial', 15), foreground="white", background="black")
+        self.go_to_emp = tk.Button(self.frame, text="View employee", command=self.goEmp, font=('Arial', 15), background='silver')
         self.go_to_emp.grid(row=3, column=1, columnspan=2, pady=10)
         
         
@@ -92,7 +92,7 @@ class ViewEmployeeAdmin():
         self.optionMenu.grid(row=4, column=1, columnspan=2, pady=10)
        
 
-        self.payslip = tk.Button(self.frame, text="Generate Report", command=self.generateDatabase, font=('Arial', 15), foreground="white", background="black")
+        self.payslip = tk.Button(self.frame, text="Generate Report", command=self.generateDatabase, font=('Arial', 15), background='silver')
         self.payslip.grid(row=5, column=1, columnspan=2, pady=10)
         self.scroll.config(command=self.list_box.yview)
 
@@ -265,42 +265,46 @@ class ViewEmployeeEmp():
     def __init__(self,master, employee_data) -> None:
         self.master = master
         self.master.title("View Employee Screen")
-        self.master.geometry('1000x720')
+        self.master.geometry('1200x900')
+        self.master['bg'] = '#007385'
+        
 
         #TODO actually document this document
         #TODO Make the thing read once only 
         #TODO (cont) to make the page load more seemless
-        self.frame =tk.Frame(width=1000, height=720)
+        self.frame =tk.Frame(width=1000, height=720, background='#007385')
         self.frame.grid(row=0, column=0)
         # In center of screen, create welcome message, username and password input boxes with username and password headings
         self.user: Employee = employee_data
    
         self.employees: list[Employee] = [Employee(row) for row in csvalchemy.singleton.get_rows()]
         
-        self.usertitle = tk.Label(self.frame, text=f'Hello, {self.user.fname} {self.user.lname}', font=('Arial', 35), anchor=tk.W)
+        self.usertitle = tk.Label(self.frame, text=f'Hello, {self.user.fname} {self.user.lname}', font=('Arial', 35), anchor=tk.W, background='silver')
         self.usertitle.grid(row=0, column=0, padx=40)
-        self.perm = tk.Label(self.frame, text=f'Permission:{self.user.permission.upper()}', font=('Arial', 25), anchor=tk.E)
+        self.perm = tk.Label(self.frame, text=f'Permission:{self.user.permission.upper()}', font=('Arial', 25), anchor=tk.E, background='silver')
         self.perm.grid(row=1,column=0,pady=10, padx=40)
 
-        self.edit_emp_btn = tk.Button(self.frame, text="Edit Your Details", command=self.goEdit, font=('Arial', 15))
+        self.edit_emp_btn = tk.Button(self.frame, text="Edit Your Details", command=self.goEdit, font=('Arial', 15), background='silver')
         self.edit_emp_btn.grid(row=3, column=0,pady=10)
 
 
-        self.emp_title = tk.Label(self.frame, text="Employee list", font=('Arial', 50))
+        self.emp_title = tk.Label(self.frame, text="Employee list", font=('Arial', 50), background='silver')
         self.emp_title.grid(row=0, column=1, columnspan=3)
 
 
-        self.emp_title = tk.Label(self.frame, text="🔍", font=('Arial', 25))
+        self.emp_title = tk.Label(self.frame, text="🔍", font=('Arial', 25), background="silver", pady=10)
+        self.emp_title.grid(row=1, column=1, padx=0)
         self.emp_title.grid(row=1, column=1, padx=0)
         self.search_var = tk.StringVar()#search value to be stored in here
-        self.search_entry = tk.Entry(self.frame, textvariable=self.search_var, width=30, font=('Arial', 25))
+        self.search_entry = tk.Entry(self.frame, textvariable=self.search_var, width=30, font=('Arial', 25), background='silver')
         self.search_entry.grid(row=1, column=2, padx=0, sticky=tk.NSEW)
     
         
         self.scroll = tk.Scrollbar(self.frame)
         self.scroll.grid(row=2, column=3, sticky=tk.NS)
 
-        self.list_box = tk.Listbox(self.frame, height=15,yscrollcommand=self.scroll.set, font=('Arial', 25))
+        self.list_box = tk.Listbox(self.frame, height=15,yscrollcommand=self.scroll.set, font=('Arial', 25), background='silver')
+        
         for employee in self.employees:
             self.list_box.insert(tk.END, f"{employee.fname} {employee.lname}")
         self.list_box.grid(row=2, column=1, columnspan=2, sticky=(tk.W + tk.E))
@@ -308,9 +312,9 @@ class ViewEmployeeEmp():
 
         
 
-        self.go_to_emp = tk.Button(self.frame, text="View Your Details", command=self.goEmpSelf, font=('Arial', 15))
+        self.go_to_emp = tk.Button(self.frame, text="View Your Details", command=self.goEmpSelf, font=('Arial', 15), background='silver')
         self.go_to_emp.grid(row=3, column=1, columnspan=2, pady=10)
-        self.go_to_emp = tk.Button(self.frame, text="View Employee", command=self.goEmpPub, font=('Arial', 15))
+        self.go_to_emp = tk.Button(self.frame, text="View Employee", command=self.goEmpPub, font=('Arial', 15), background='silver')
         self.go_to_emp.grid(row=4, column=1, columnspan=2, pady=10)
         self.scroll.config(command=self.list_box.yview)
 
