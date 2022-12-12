@@ -71,30 +71,30 @@ class SingleEmployeePub():
     def __init__(self,master,viewer,  employee: Employee) -> None:
         self.master = master
         self.master.title("View Employee Screen")
-        self.master.geometry('1000x720')
+        self.master.geometry('1200x900')
+        self.master['bg'] = '#007385'
 
         
-        self.frame =tk.Frame(width=1000, height=720)
+        self.frame =tk.Frame(width=1000, height=720, background='#007385'
+)
         self.frame.grid(row=0, column=0)
         # In center of screen, create welcome message, username and password input boxes with username and password headings
         self.user = employee
         self.viewer = viewer
-        self.back_button = tk.Button(self.frame, text='Back', command=self.go_back)
+        self.back_button = tk.Button(self.frame, text='Back', command=self.go_back, background='silver')
         self.back_button.grid(row=0, column=0, padx=0)
-        self.back_button1 = tk.Button(self.frame, text='Print Pay', command=self.printpayInfo)
-        self.back_button1.grid(row=0, column=2, padx=0)
-        self.title_view = tk.Label(self.frame, text=f"{self.user.fname} {self.user.lname}'s Profile", font=('Arial', 50))
+        self.title_view = tk.Label(self.frame, text=f"{self.user.fname} {self.user.lname}'s Profile", font=('Arial', 50), background='silver')
         self.title_view.grid(row=0, column=1, padx=0, sticky=tk.W)
         self.views: dict[tk.Label] = {}
-        self.views['id'] = tk.Label(self.frame, text="ID: " + self.user.emp_id)
-        self.views['fname'] = tk.Label(self.frame, text="First Name: " + self.user.fname)
-        self.views['lname'] = tk.Label(self.frame, text="Last Name: " + self.user.lname)
-        self.views['office_phone'] = tk.Label(self.frame, text="Office Phone: " + self.user.office_phone)
-        self.views['birthday'] = tk.Label(self.frame, text="Birthday: " + self.user.birthday)
-        self.views['title'] = tk.Label(self.frame, text="Title: " + self.user.title)
-        self.views['department'] = tk.Label(self.frame, text="Department: " + self.user.department)
-        self.views['office_email'] = tk.Label(self.frame, text="Office Email: " + self.user.office_email)
-        self.views['emergency_contact'] = tk.Label(self.frame, text="Emergency Contact: " + self.user.emergency_contact)
+        self.views['id'] = tk.Label(self.frame, text="ID: " + self.user.emp_id, background='silver')
+        self.views['fname'] = tk.Label(self.frame, text="First Name: " + self.user.fname, background='silver')
+        self.views['lname'] = tk.Label(self.frame, text="Last Name: " + self.user.lname, background='silver')
+        self.views['office_phone'] = tk.Label(self.frame, text="Office Phone: " + self.user.office_phone, background='silver')
+        self.views['birthday'] = tk.Label(self.frame, text="Birthday: " + self.user.birthday, background='silver')
+        self.views['title'] = tk.Label(self.frame, text="Title: " + self.user.title, background='silver')
+        self.views['department'] = tk.Label(self.frame, text="Department: " + self.user.department, background='silver')
+        self.views['office_email'] = tk.Label(self.frame, text="Office Email: " + self.user.office_email, background='silver')
+        self.views['emergency_contact'] = tk.Label(self.frame, text="Emergency Contact: " + self.user.emergency_contact, background='silver')
 
         rlim = 5
         clim = 4
