@@ -27,7 +27,7 @@ class SingleEmployeePrivate():
         self.views['lname'] = tk.Label(self.frame, text="Last Name: " + self.user.lname, background='silver')
         self.views['address'] = tk.Label(self.frame, text="Address: " + str(self.user.address), background='silver')
         self.views['office_phone'] = tk.Label(self.frame, text="Office Phone: " + self.user.office_phone, background='silver')
-        self.views['pay_type'] = tk.Label(self.frame, text="Paytype: " + self.user.pay_type, foreground="white", background='silver')
+        self.views['pay_type'] = tk.Label(self.frame, text="Paytype: " + self.user.pay_type, background='silver')
         self.views['wage'] = tk.Label(self.frame, text="Wage: " + self.user.wage, background='silver')
         self.views['birthday'] = tk.Label(self.frame, text="Birthday" + self.user.birthday, background='silver')
         self.views['permission'] = tk.Label(self.frame, text="Permission Level: " + self.user.permission, background='silver')
