@@ -9,6 +9,7 @@ from view_employees import ViewEmployeeAdmin, ViewEmployeeEmp
 from Employee import Employee
 import os
 import csvalchemy
+from hover_button import HoverButton
 class LoginScreen():
     def __init__(self, master: tk.Tk) -> None:
         super().__init__()
@@ -30,7 +31,7 @@ class LoginScreen():
         self.welcome_message = Label(self.frame, text="Welcome", style='W.TLabel')
 
         # Take in both username and password as input from the user
-        self.id_message = tk.Label(self.frame, text="Employee ID", font=('Arial', 25), background='silver')
+        self.id_message = tk.Label(self.frame, text="Employee ID", font=('Arial', 25), background='#007385')
 
         self.id = tk.Entry(self.frame, font=('Arial', 25), background='silver')
 
@@ -39,13 +40,12 @@ class LoginScreen():
         self.id_line3 = tk.Label(self.frame, text="", font=('Arial', 25), background='#007385' )
 
 
-        self.pass_message = tk.Label(self.frame, text="Password", font=('Arial', 25), background='silver')
+        self.pass_message = tk.Label(self.frame, text="Password", font=('Arial', 25), background='#007385')
 
         self.password = tk.StringVar()#Password is stored here
         self.pass_entry = tk.Entry(self.frame, textvariable=self.password, show="*", font=('Arial', 25), background='silver')
 
-        self.submit = tk.Button(self.frame, text="Submit", command=self.login, font=('Arial', 25, 'bold', 'underline'), background='silver')
-        
+        self.submit = HoverButton("Login", "Click the button to attmept a login", self.login,self.frame, font=('Arial', 25, 'bold'), background='#007385')
         #Pack the members
         self.welcome_message.pack()
         self.id_line.pack()

@@ -1,113 +1,162 @@
 import tkinter as tk
-import os
+import tkinter.messagebox as messagebox
 import csv
 from Employee import Employee
+from hashlib import sha256
+from shutil import copy
+import os
 import csvalchemy
+from hover_button import HoverButton
 class EditEmployee():
-    def __init__(self,master,user, employee: Employee) -> None:
+    def __init__(self,master, user: Employee, employee: Employee, is_test_mode=False) -> None:
         self.master = master
+        self.test_mode = is_test_mode
         self.master.title("Edit Employee Screen")
+        self.master.resizable(width=False, height=False)
         self.master.geometry('1200x900')
         self.master['bg'] = '#007385'
-        self.frame =tk.Frame(width=1000, height=720, background='#007385')
+        self.frame =tk.Frame(width=1200, height=900, background='#007385')
         self.frame.grid(row=0, column=0)
         self.user = user
-        self.emp = employee
-        self.back_button = tk.Button(self.frame, text='Back', command=self.go_back, background='silver')
-        self.back_button.grid(row=0, column=0, padx=0)
-        self.title_view = tk.Label(self.frame, text=f"{self.emp.fname} {self.emp.lname}'s Profile", font=('Arial', 50), background='silver')
-        self.title_view.grid(row=0, column=1, padx=0, sticky=tk.W)
+        self.employee = employee
+        self.back_button = HoverButton('Back', 'Go back to previous screen', self.go_back, self.frame)
+        self.back_button.grid(row=0, column=0, padx=0, pady=(10,0))
+        self.title_view = tk.Label(self.frame, text=f"Add Employee", font=('Arial', 50), background='#007385')
+        self.title_view.grid(row=0, column=1, padx=0, sticky=tk.W+tk.E)
+        self.title_view = tk.Label(self.frame, text="Please fill out all the fields below.", font=('Arial', 15), background='#007385')
+        self.title_view.grid(row=1, column=1, padx=0, sticky=tk.W+tk.E, pady=10)
         #UI desing 
         #Have a list of entries. Simply submit the full entry with
         #the initial values of the employees is the value
         #Not needed: disable the etnry until a person clicks a button right next to the vlaue
         self.views: dict[tk.Label] = {}
-        self.make_editable_entry('id', employee.emp_id)
-        self.make_editable_entry('fname', employee.fname)
-        self.make_editable_entry('lname', employee.lname)
-        self.make_editable_entry('department', employee.department)
-        self.make_editable_entry('title', employee.title)
-        self.make_editable_entry('office_email', employee.office_email)
-        self.make_editable_entry('street number', employee.address.street_address)
-        self.make_editable_entry('apt number', employee.address.apt_no)
-        self.make_editable_entry('city', employee.address.city)
-        self.make_editable_entry('state', employee.address.state)
-        self.make_editable_entry('zipcode', employee.address.zip_code)
+        self.make_editable_entry('ID', employee.emp_id)
+        self.make_editable_entry('First Name', employee.fname)
+        self.make_editable_entry('Last Name', employee.lname)
+        self.make_editable_entry('Department', employee.department)
+        self.make_editable_entry('Title', employee.title)
+        self.make_editable_entry('Office Email', employee.office_email)
+        self.make_editable_entry('Street Number', employee.address.street_address)
+        self.make_editable_entry('Apt Number', employee.address.apt_no)
+        self.make_editable_entry('City', employee.address.city)
+        self.state_val = tk.StringVar()
+        self.state_val.set(employee.address.state)
+        state_names = ["I am not American", "Alaska", "Alabama", "Arkansas", "American Samoa", "Arizona", "California",
+         "Colorado", "Connecticut", "District ", "of Columbia", "Delaware", "Florida", "Georgia",
+          "Guam", "Hawaii", "Iowa", "Idaho", "Illinois", "Indiana", "Kansas", "Kentucky", "Louisiana",
+           "Massachusetts", "Maryland", "Maine", "Michigan", "Minnesota", "Missouri", "Mississippi",
+            "Montana", "North Carolina", "North Dakota", "Nebraska", "New Hampshire", "New Jersey",
+             "New Mexico", "Nevada", "New York", "Ohio", "Oklahoma", "Oregon", "Pennsylvania",
+              "Puerto Rico", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas",
+               "Utah", "Virginia", "Virgin Islands", "Vermont", "Washington", "Wisconsin", "West Virginia", "Wyoming"]
+        self.make_editable_entry('State', is_dropdown=True, options=state_names, clicked=self.state_val)
+        self.make_editable_entry('Zipcode', employee.address.zip_code)
         self.make_editable_entry('Country', employee.address.country)
-        self.make_editable_entry('office_phone', employee.office_phone)
-        self.make_editable_entry('Pay Type', employee.pay_type)
-        self.make_editable_entry('wage', employee.wage)
-        self.make_editable_entry('Date of Birth', employee.birthday)
-        self.make_editable_entry('social_secuitry', employee.social_secuitry)
-        self.make_editable_entry('start_date', employee.start_date)
-        self.make_editable_entry('end_date', employee.end_date)
-        self.make_editable_entry('bank_info', employee.bank_info)
-        self.make_editable_entry('permission', employee.permission)
-        self.make_editable_entry('emergency_contact', employee.emergency_contact)
-        self.make_editable_entry('is_deactivated', employee.is_deactivated)
-        self.make_editable_entry('route', employee.route)
-        self.make_editable_entry('account number', employee.acct_no)
+        self.make_editable_entry('Office Phone (xxx-xxx-xxxx)', employee.office_phone)
+        self.pay_type_val = tk.StringVar()
+        self.pay_type_val.set(employee.pay_type)
+        self.make_editable_entry('Pay Type',is_dropdown=True, options=['Hourly', 'Commission', 'Salary'], clicked=self.pay_type_val)
+        self.make_editable_entry('Wage(Put 0 if commission)', employee.wage)
+        self.make_editable_entry('Date of Birth (mm/dd/yyyy)', employee.birthday)
+        self.make_editable_entry('Social Securitry (xxx-xx-xxxx)', employee.social_secuitry)
+        self.make_editable_entry('Start Date (mm/dd/yyyy)', employee.start_date)
+        self.make_editable_entry('End Date (mm/dd/yyyy)', employee.end_date)
+        self.bank_info_val = tk.StringVar()
+        if employee.bank_info == 'dm':
+             self.bank_info_val.set('Direct Method')
+        else:
+            self.bank_info_val.set('Mail Method')
+        self.make_editable_entry('Bank Info', is_dropdown=True, options=['Direct Method', 'Mail Method'], clicked=self.bank_info_val)
+        self.permission_val = tk.StringVar()
+        if employee.permission == 'admin':
+            self.permission_val.set("Admin")
+        else:
+            self.permission_val.set('Employee')
+        self.make_editable_entry('Permission', is_dropdown=True, options=['Admin', 'Employee'], clicked=self.permission_val)
+        self.make_editable_entry('Emergency Contact', employee.emergency_contact)
+        self.active_value = tk.StringVar()
+        if employee.is_deactivated == 'y':
+            self.active_value.set("Yes")
+        else:
+            self.active_value.set('No')
+        self.make_editable_entry('Is Deactivated', is_dropdown=True, options=['Yes', 'No'], clicked=self.active_value)
+        self.make_editable_entry('Route', employee.route)
+        self.make_editable_entry('Account Number', employee.acct_no)
         
 
-        rlim = 19
+        rlim = 21
         clim = 4
-        r, c = 1, 0
+        r, c = 3, 0
         for key, view in self.views.items():
             # print('dict values', view, key)
-            view.grid(row=r, column=c, padx=30, pady=5)
+            view.grid(row=r, column=c, padx=60, pady=5)
             r += 1
             if r >= rlim:
-                r = 1
+                r = 3
                 c += 1
-        self.submit_btn = tk.Button(self.frame, text="💾 Save", command=self.submit, font=('Arial', 25), background='silver')
-        self.submit_btn.grid(row=16, column=2, rowspan=4, sticky=tk.NSEW)
+        self.submit_btn = HoverButton("💾 Save", "Click here to save the entry", self.submit, self.frame,font=('Arial', 50))
+        self.submit_btn.grid(row=19, column=2, rowspan=2, sticky=tk.NSEW)
     def submit(self):
         #TODO do form validation
-        allInfo = {}
-        data = {}
-        holder = []
-        employee = self.emp
-        dataHolder = [employee.emp_id, employee.fname, employee.lname, employee.department, employee.title, employee.office_email
-        ,employee.address.street_address, employee.address.apt_no, employee.address.city, employee.address.state, employee.address.zip_code
-        , employee.address.country, employee.office_phone, employee.pay_type, employee.wage, employee.birthday, employee.social_secuitry,  
-        employee.start_date,  employee.end_date, employee.bank_info, employee.permission,employee.emergency_contact , employee.is_deactivated,
-        employee.password,employee.route, employee.acct_no ]
-        cat = ['EmpID','First','Last','Dept','Title','OfficeEmail','StreetNumber','Apt',
-                'City','State','ZipCode','Country','OfficePhone','PayType','Wage','DateOfBirth',
-                'SocialSecurity','StartDate','EndDate','BankInfo','PermissionLevel','EmergencyContact','Deactivated','Password', 'Route',"Account"]
         row = []
-        assert len(self.views) > 0
+        keys = []
+        dropdowns = ['Bank Info', 'Is Deactivated', 'State', 'Pay Type', 'Permission']
+        if not os.path.exists('./employeetemp.csv'):
+            copy('./employee.csv', 'employeetemp.csv')
         for key, value in self.views.items():
             is_label = key[-6:] == '_label'
-            found = False
             if not is_label:
-                #TODO validate the entries below
-                row.append(value.get())
-                if key == 'is_deactivated':
-                    row.append(employee.password)
-        prev_data = self.emp
-        self.emp = Employee(row)
-        #TODO Edit the entries in the file
-        print(self.emp.address.country)
-        csvalchemy.singleton.edit_employee(prev_data.emp_id,self.emp)
-        self.go_back()
-    def make_editable_entry(self, key, value):
-        self.views[key + '_label'] = tk.Label(self.frame, text=key, background='silver')
-        self.views[key] = tk.Entry(self.frame, background="silver")
-        self.views[key].insert(0, value)
+                #TODO do the form validation with a dictionary to look up how
+                #TODO should be implemented in the employee class
+                #TODO add the employee to the csv file
+                #Hasing the passwrod
+                keys.append(key)
+                if key == dropdowns[0]:
+                    row.append(self.bank_info_val.get())
+                elif key == dropdowns[1]:
+                    row.append(self.active_value.get())
+                elif key == dropdowns[2]:
+                    row.append(self.state_val.get())
+                elif key == dropdowns[3]:
+                    row.append(self.pay_type_val.get())
+                elif key == dropdowns[4]:
+                    row.append(self.permission_val.get())
+                else:
+                    row.append(value.get())
+        if self.test_mode:
+            #Asserts are only for testing
+            assert len(row) > 0
+            assert row[0] != ""
+            assert row[1] != ""
+            assert row[20] != ""
+            assert row[22] != ""
+            assert row[23] != ""
+        row.insert(23, self.employee.password) #Insert the password that has already been hashed to avoid any bugs with editing
+        error = csvalchemy.singleton.validate_row(keys,row, is_edit=True)
+        if error[0]:
+            #It returns boolean how things went
+            csvalchemy.singleton.edit_employee(self.employee.emp_id, Employee(row))
+            self.go_back()
+        else:
+            messagebox.showerror(error[1][0], error[1][1])
+    def make_editable_entry(self, key, value=None, is_dropdown=False, options=None, clicked=None):
+        self.views[key + '_label'] = tk.Label(self.frame, text=key, font=('Arial', 25), background='#007385')
+        if is_dropdown:
+            self.views[key] = tk.OptionMenu(self.frame,clicked, *options)
+        else:
+            self.views[key] = tk.Entry(self.frame, background="silver")
+            self.views[key].insert(0, value)
     def go_back(self):
-        from view_employees import ViewEmployeeEmp, ViewEmployeeAdmin
+        from view_employees import ViewEmployeeAdmin, ViewEmployeeEmp
         self.frame.destroy()
         #TODO Insert total data  in place of the user below
         if self.user.permission == 'admin':
             self.app = ViewEmployeeAdmin(self.master, employee_data=self.user)
         else:
             self.app = ViewEmployeeEmp(self.master, employee_data=self.user)
-
 if __name__ == '__main__':
     window = tk.Tk()
     emp_data = None
-    
     with open('./employee.csv') as file:
             reader = csv.reader(file)
             for i,row in enumerate(reader):
@@ -118,7 +167,5 @@ if __name__ == '__main__':
                     break
     employee = Employee()
     employee.row_init(emp_data)
-    user = Employee()
-    user.row_init(emp_data)
-    frame = EditEmployee(window, user ,employee)
+    frame = EditEmployee(window, employee, employee, is_test_mode=False)
     window.mainloop()

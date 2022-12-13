@@ -15,24 +15,6 @@ class Address:
         return f'{self.street_address} #{self.apt_no} {self.city},{self.state} {self.country} {self.zip_code}'
 
 class Employee():
-    def init_regex_expressions(self):
-        #TODO finish all the regex expressions for form validation
-        self.reg_refs = {}
-        self.reg_refs['fname'] = r'[a-zA-Z]{1,}'
-        self.reg_refs['lname'] = r'[a-zA-Z]{1,}'
-        self.reg_refs['street'] = r'[1-9].[0-0]*[a-zA-Z]'
-        self.reg_refs['city'] = r'[a-zA-Z]{1,}'
-        self.reg_refs['state'] = r'[a-zA-Z]{1,}'
-        self.reg_refs['country'] = r'[a-zA-Z]{1,}'
-        self.reg_refs['zipcode'] = r'[0-9]{5}'
-        self.reg_refs['id'] = r'[0-9]{1,}'
-        self.reg_refs['wage'] = r'[0-9]{1,}\.?[0-9]*'
-        self.reg_refs['birthday'] = r'[0-9]{1,}\.?[0-9]*'
-        self.reg_refs['permission'] = r'[0-9]{1,}\.?[0-9]*'
-        self.reg_refs['title'] = r'[0-9]{1,}\.?[0-9]*'
-        self.reg_refs['wage'] = r'[0-9]{1,}\.?[0-9]*'   
-    def validate(self, key):
-        pass
 
     def row_init(self, row):
         '''This only works to exist with legacy code that will be fixed later'''
@@ -86,6 +68,8 @@ class Employee():
         self.password = row[23]
         self.route = row[24]
         self.acct_no = row[25]
-
-        self.init_regex_expressions()
+    def is_active(self):
+        return self.is_deactivated == 'y'
+    def mail_method(self):
+        pass
         
