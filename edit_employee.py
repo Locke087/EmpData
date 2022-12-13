@@ -21,7 +21,7 @@ class EditEmployee():
         self.employee = employee
         self.back_button = HoverButton('Back', 'Go back to previous screen', self.go_back, self.frame)
         self.back_button.grid(row=0, column=0, padx=0, pady=(10,0))
-        self.title_view = tk.Label(self.frame, text=f"Add Employee", font=('Arial', 50), background='#007385')
+        self.title_view = tk.Label(self.frame, text=f"Edit Employee", font=('Arial', 50), background='#007385')
         self.title_view.grid(row=0, column=1, padx=0, sticky=tk.W+tk.E)
         self.title_view = tk.Label(self.frame, text="Please fill out all the fields below.", font=('Arial', 15), background='#007385')
         self.title_view.grid(row=1, column=1, padx=0, sticky=tk.W+tk.E, pady=10)
