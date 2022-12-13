@@ -3,6 +3,7 @@ import os
 from hashlib import sha256
 from Employee import Employee
 import re
+from datetime import datetime
 class CSVManager():
     def __init__(self) -> None:
         self.data = []
@@ -37,8 +38,11 @@ class CSVManager():
     def archive_employee(self, emp: Employee):
         if emp.is_deactivated == 'n':
             emp.is_deactivated = 'y'
+            emp.end_date = datetime.now().strftime('%m/%d/%Y')
         else:
             emp.is_deactivated = 'n'
+            
+        
         emp.sync_row()
         self.edit_employee(emp.emp_id, emp)
     def edit_employee(self,prev_id: int, employee: Employee):
