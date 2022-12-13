@@ -1,4 +1,5 @@
 import re
+#This is a file to test the regex validation of the validate row in the csvalchemy file
 def validate(email):
     reg_refs = {}
     keys = ["Office Email"]
