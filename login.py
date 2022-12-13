@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import *
 from tkinter.ttk import *
+from idlelib.tooltip import Hovertip
 from tkinter import messagebox
 import csv
 from hashlib import sha256
@@ -44,6 +45,7 @@ class LoginScreen():
         self.pass_entry = tk.Entry(self.frame, textvariable=self.password, show="*", font=('Arial', 25), background='silver')
 
         self.submit = tk.Button(self.frame, text="Submit", command=self.login, font=('Arial', 25, 'bold', 'underline'), background='silver')
+        
         #Pack the members
         self.welcome_message.pack()
         self.id_line.pack()
@@ -55,6 +57,7 @@ class LoginScreen():
         self.id_line3.pack()
         self.submit.pack()
         self.frame.pack()
+
 
     def login(self):
 
